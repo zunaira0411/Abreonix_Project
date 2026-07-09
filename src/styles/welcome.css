@@ -1,0 +1,43 @@
+.welcome-banner {
+  background: linear-gradient(135deg, #2563eb, #1e40af);
+  color: white;
+  border-radius: 18px;
+  padding: 30px;
+  margin-bottom: 30px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
+}
+
+.welcome-text h1 {
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+
+.welcome-text p {
+  font-size: 16px;
+  opacity: 0.9;
+}
+
+.date-box {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 14px 22px;
+  border-radius: 12px;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .welcome-banner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+}
