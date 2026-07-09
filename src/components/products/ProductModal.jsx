@@ -1,6 +1,5 @@
-
+import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
-import { useState } from "react";
 import "../../styles/products.css";
 
 function ProductModal({
@@ -8,6 +7,7 @@ function ProductModal({
   onClose,
   products,
   setProducts,
+  editingProduct,
 }) {
   const [formData, setFormData] = useState({
     name: "",
@@ -19,6 +19,32 @@ function ProductModal({
     barcode: "",
     description: "",
   });
+
+  useEffect(() => {
+    if (editingProduct) {
+      setFormData({
+        name: editingProduct.name,
+        category: editingProduct.category,
+        supplier: editingProduct.supplier,
+        warehouse: editingProduct.warehouse,
+        price: editingProduct.price.replace("₹", ""),
+        stock: editingProduct.stock,
+        barcode: editingProduct.barcode || "",
+        description: editingProduct.description || "",
+      });
+    } else {
+      setFormData({
+        name: "",
+        category: "",
+        supplier: "",
+        warehouse: "",
+        price: "",
+        stock: "",
+        barcode: "",
+        description: "",
+      });
+    }
+  }, [editingProduct, isOpen]);
 
   if (!isOpen) return null;
 
@@ -40,7 +66,7 @@ function ProductModal({
       !formData.price ||
       !formData.stock
     ) {
-      alert("Please fill all required fields.");
+      toast.error("Please fill all required fields!");
       return;
     }
 
@@ -52,20 +78,45 @@ function ProductModal({
       status = "Low Stock";
     }
 
-    const newProduct = {
-      id: products.length + 1,
-      name: formData.name,
-      category: formData.category,
-      supplier: formData.supplier,
-      warehouse: formData.warehouse,
-      stock: Number(formData.stock),
-      price: `₹${formData.price}`,
-      status,
-      barcode: formData.barcode,
-      description: formData.description,
-    };
+    if (editingProduct) {
+      const updatedProducts = products.map((product) =>
+        product.id === editingProduct.id
+          ? {
+              ...product,
+              name: formData.name,
+              category: formData.category,
+              supplier: formData.supplier,
+              warehouse: formData.warehouse,
+              stock: Number(formData.stock),
+              price: `₹${formData.price}`,
+              barcode: formData.barcode,
+              description: formData.description,
+              status,
+            }
+          : product
+      );
 
-    setProducts([...products, newProduct]);
+      setProducts(updatedProducts);
+
+      toast.success("Product Updated Successfully!");
+    } else {
+      const newProduct = {
+        id: Date.now(),
+        name: formData.name,
+        category: formData.category,
+        supplier: formData.supplier,
+        warehouse: formData.warehouse,
+        stock: Number(formData.stock),
+        price: `₹${formData.price}`,
+        barcode: formData.barcode,
+        description: formData.description,
+        status,
+      };
+
+      setProducts([...products, newProduct]);
+
+      toast.success("Product Added Successfully!");
+    }
 
     setFormData({
       name: "",
@@ -79,16 +130,14 @@ function ProductModal({
     });
 
     onClose();
-
-    toast.success("Product Added Successfully!");
-  };
-
-  return (
+  };  return (
     <div className="modal-overlay">
       <div className="product-modal">
 
         <div className="modal-header">
-          <h2>Add New Product</h2>
+          <h2>
+            {editingProduct ? "Edit Product" : "Add New Product"}
+          </h2>
 
           <button
             className="close-btn"
@@ -156,7 +205,7 @@ function ProductModal({
           </div>
 
           <div className="form-group">
-            <label>Price</label>
+            <label>Price (₹)</label>
 
             <input
               type="number"
@@ -217,7 +266,7 @@ function ProductModal({
               type="submit"
               className="save-btn"
             >
-              Save Product
+              {editingProduct ? "Update Product" : "Save Product"}
             </button>
 
           </div>

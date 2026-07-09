@@ -1,10 +1,13 @@
 import Swal from "sweetalert2";
 import "../../styles/products.css";
+import { FaEye } from "react-icons/fa";
 
 function ProductTable({
   products,
+  allProducts,
   setProducts,
   onEdit,
+  onView,
 }) {
 
   const deleteProduct = (id) => {
@@ -33,7 +36,7 @@ function ProductTable({
 
       if (result.isConfirmed) {
 
-        const updatedProducts = products.filter(
+        const updatedProducts = allProducts.filter(
           (product) => product.id !== id
         );
 
@@ -138,6 +141,13 @@ function ProductTable({
                 </td>
 
                 <td className="action-buttons">
+
+                  <button
+                  className="view-btn"
+                  onClick={() => onView(product)}
+                >
+                  <FaEye />
+                  </button>
 
                   <button
                     className="edit-btn"
