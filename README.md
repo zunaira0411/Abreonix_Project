@@ -11,9 +11,9 @@
 
 # 📖 About the Project
 
-Smart Inventory Tracker is a modern web application designed to simplify inventory management for businesses. It provides an interactive dashboard to monitor inventory, manage products, track stock levels, and visualize data through charts.
+Smart Inventory Tracker is a modern Inventory Management System designed to simplify inventory operations for businesses. It provides an interactive dashboard to monitor inventory, manage products, track stock levels, and visualize inventory insights.
 
-This project is currently under development and is being built as part of my Web Development Internship. Future updates will include backend integration, database connectivity, authentication, supplier management, warehouse management, reports, and deployment.
+This project is currently being developed as part of my **Web Development Internship at Abreonix**. Future updates will include backend integration, authentication, supplier management, warehouse management, reports, and deployment.
 
 ---
 
@@ -22,7 +22,7 @@ This project is currently under development and is being built as part of my Web
 ## 🔐 Authentication
 
 - Modern Login Interface
-- Responsive Design
+- Responsive Login Design
 
 ---
 
@@ -31,8 +31,8 @@ This project is currently under development and is being built as part of my Web
 - Dashboard Overview
 - Statistics Cards
 - Total Products
-- Suppliers
-- Warehouses
+- Total Suppliers
+- Total Warehouses
 - Low Stock Overview
 - Inventory Overview Line Chart
 - Stock Distribution Pie Chart
@@ -49,34 +49,54 @@ This project is currently under development and is being built as part of my Web
 
 ## 📦 Product Management
 
-- Product Listing Table
-- Add Product Modal
-- Delete Product
-- SweetAlert2 Delete Confirmation
-- Product Status Badges
-- Toast Notifications
-- Responsive Table
-
----
-
-# 🚧 Features In Progress
-
+- View Products
+- Add New Product
 - Edit Product
-- Search Product
+- Delete Product
+- View Product Details
+- Search Products
 - Category Filter
-- Local Storage
-- Product Validation
+- Product Sorting
+- Dynamic Stock Status
+- Local Storage Support
+- Toast Notifications
+- SweetAlert Confirmation Dialogs
 
 ---
 
-# 📅 Upcoming Modules
+## 🎨 UI Features
+
+- Responsive Design
+- Modern Dashboard Layout
+- Sidebar Navigation
+- Clean User Interface
+
+---
+
+# 🚧 Current Project Status
+
+## ✅ Completed Modules
+
+- Login
+- Dashboard
+- Product Management
+- Search Functionality
+- Category Filter
+- Product Sorting
+- Product Details Modal
+- Local Storage Integration
+- Responsive User Interface
+
+---
+
+## 🚀 Upcoming Modules
 
 - Suppliers Management
 - Warehouses Management
 - Purchase Orders
-- Reports
-- Settings
+- Reports & Analytics
 - User Profile
+- Settings
 - Notifications
 - Dark Mode
 
@@ -84,7 +104,7 @@ This project is currently under development and is being built as part of my Web
 
 # 🌐 Backend (Upcoming)
 
-The following technologies will be integrated in the next phase:
+The following technologies will be integrated in future versions:
 
 - Node.js
 - Express.js
@@ -99,14 +119,16 @@ The following technologies will be integrated in the next phase:
 
 # 🛠️ Tech Stack
 
-### Frontend
+## Frontend
 
 - React.js
 - Vite
 - JSX
 - CSS3
 
-### Libraries Used
+---
+
+## Libraries Used
 
 - React Router DOM
 - React Icons
@@ -121,7 +143,7 @@ The following technologies will be integrated in the next phase:
 
 # 📂 Project Structure
 
-```
+```text
 Smart Inventory Tracker
 │
 ├── public
@@ -129,12 +151,15 @@ Smart Inventory Tracker
 ├── src
 │   ├── assets
 │   ├── components
-│   │
-│   ├── dashboard
-│   ├── layout
-│   ├── products
+│   │   ├── dashboard
+│   │   ├── layout
+│   │   └── products
 │   │
 │   ├── pages
+│   │   ├── Dashboard.jsx
+│   │   ├── Products.jsx
+│   │   └── Login.jsx
+│   │
 │   ├── styles
 │   ├── App.jsx
 │   └── main.jsx
@@ -178,7 +203,7 @@ npm run dev
 
 ## 🔐 Login Page
 
-![Login Page](screenshots/login.png)
+![Login](screenshots/login.png)
 
 ---
 
@@ -188,10 +213,16 @@ npm run dev
 
 ---
 
-## 📦 Products
+## 📦 Products Page
 
 ![Products](screenshots/product1.png)
 ![Products](screenshots/product2.png)
+
+---
+
+## 👁️ Product Details
+
+![Product Details](screenshots/product-details.png)
 
 ---
 
@@ -201,8 +232,8 @@ npm run dev
 |---------|--------|
 | Login | ✅ Completed |
 | Dashboard | ✅ Completed |
-| Products | 🟡 In Progress |
-| Suppliers | ⏳ Pending |
+| Products | ✅ Completed |
+| Suppliers | ⏳ In Progress |
 | Warehouses | ⏳ Pending |
 | Purchase Orders | ⏳ Pending |
 | Reports | ⏳ Pending |
@@ -216,11 +247,13 @@ npm run dev
 - Backend Integration
 - PostgreSQL Database
 - JWT Authentication
-- Inventory Reports
-- Export Excel
+- Supplier Management
+- Warehouse Management
+- Purchase Orders
+- Reports & Analytics
+- Export to Excel
 - Image Upload
-- Search & Filters
-- Responsive Mobile View
+- User Authentication
 - Dark Theme
 - Cloud Deployment
 
@@ -230,9 +263,9 @@ npm run dev
 
 **Zunaira Fatima**
 
-**BCA IBM**
+🎓 BCA IBM
 
-**United University**
+🏫 United University
 
 Developed as a part of the **Abreonix Web Development Internship**.
 
@@ -240,10 +273,10 @@ Developed as a part of the **Abreonix Web Development Internship**.
 
 # ⭐ Support
 
-If you like this project, consider giving it a ⭐ on GitHub.
+If you like this project, please consider giving it a ⭐ on GitHub.
 
 ---
 
-## 📜 License
+# 📜 License
 
-This project is developed for learning and internship purposes.
+This project is developed for educational and internship purposes.
