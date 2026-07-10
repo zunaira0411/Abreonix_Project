@@ -22,7 +22,7 @@ function Products() {
 
   const defaultProducts = [
     {
-      id: 1,
+      id: "PRD-1001",
       name: "Laptop",
       category: "Electronics",
       supplier: "Dell",
@@ -32,7 +32,7 @@ function Products() {
       status: "In Stock",
     },
     {
-      id: 2,
+      id: "PRD-1002",
       name: "Keyboard",
       category: "Accessories",
       supplier: "Logitech",
@@ -42,7 +42,7 @@ function Products() {
       status: "Low Stock",
     },
     {
-      id: 3,
+      id: "PRD-1003",
       name: "Monitor",
       category: "Electronics",
       supplier: "HP",
@@ -52,7 +52,7 @@ function Products() {
       status: "In Stock",
     },
     {
-      id: 4,
+      id: "PRD-1004",
       name: "Printer",
       category: "Office",
       supplier: "Canon",

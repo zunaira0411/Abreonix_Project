@@ -100,8 +100,14 @@ function ProductModal({
 
       toast.success("Product Updated Successfully!");
     } else {
+      const lastProduct = products[products.length - 1];
+
+      const nextId = lastProduct
+        ? `PRD-${Number(lastProduct.id.split("-")[1]) + 1}`
+        : "PRD-1001";
+
       const newProduct = {
-        id: Date.now(),
+        id: nextId,
         name: formData.name,
         category: formData.category,
         supplier: formData.supplier,

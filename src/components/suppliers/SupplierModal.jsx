@@ -85,8 +85,14 @@ function SupplierModal({
 
       toast.success("Supplier Updated Successfully!");
     } else {
+      const lastSupplier = suppliers[suppliers.length - 1];
+
+      const nextId = lastSupplier
+        ? `SUP-${Number(lastSupplier.id.split("-")[1]) + 1}`
+        : "SUP-1001";
+
       const newSupplier = {
-        id: Date.now(),
+        id: nextId,
         name: formData.name,
         contact: formData.contact,
         email: formData.email,
@@ -112,9 +118,7 @@ function SupplierModal({
     });
 
     onClose();
-  };
-
-  return (
+  };  return (
     <div className="modal-overlay">
       <div className="supplier-modal">
 
@@ -183,7 +187,8 @@ function SupplierModal({
               placeholder="Enter Location"
             />
           </div>
-                    <div className="form-group">
+
+          <div className="form-group">
             <label>Status</label>
 
             <select

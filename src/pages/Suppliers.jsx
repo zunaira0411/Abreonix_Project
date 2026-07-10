@@ -17,7 +17,7 @@ function Suppliers() {
 
   const defaultSuppliers = [
     {
-      id: 1,
+      id: "SUP-1001",
       name: "Dell India",
       contact: "9876543210",
       email: "sales@dell.com",
@@ -25,7 +25,7 @@ function Suppliers() {
       status: "Active",
     },
     {
-      id: 2,
+      id: "SUP-1002",
       name: "HP Pvt Ltd",
       contact: "9876501234",
       email: "support@hp.com",
@@ -33,7 +33,7 @@ function Suppliers() {
       status: "Active",
     },
     {
-      id: 3,
+      id: "SUP-1003",
       name: "Logitech",
       contact: "9876511111",
       email: "contact@logitech.com",
