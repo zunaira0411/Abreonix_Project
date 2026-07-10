@@ -302,6 +302,22 @@ The following technologies are planned for future integration:
 
 ---
 
+---
+
+# 📌 Project Status
+
+This project is currently completed at the frontend level and includes all major inventory management modules.
+
+The next phase of development will focus on:
+
+- Home / Landing Page
+- Backend Integration
+- Database Connectivity
+- Authentication APIs
+- Cloud Deployment
+
+---
+
 # 👨‍💻 Developer
 
 **Zunaira Fatima**
@@ -312,22 +328,21 @@ The following technologies are planned for future integration:
 
 💼 Developed as part of the **Abreonix Web Development Internship**
 
----
-
-# 🤝 Contributing
-
-Contributions, suggestions, and feedback are welcome.
-
-Feel free to fork this repository and create a pull request.
+📧 Feel free to connect with me on LinkedIn and GitHub.
 
 ---
 
-# ⭐ Support
+# ⭐ Acknowledgement
 
-If you like this project, don't forget to give it a ⭐ on GitHub.
+This project was developed during my **Web Development Internship at Abreonix** to strengthen my frontend development skills using React.js and modern web technologies.
 
 ---
 
 # 📜 License
 
-This project is developed for educational and internship purposes.
+This project is created for **educational, learning, and internship purposes**.
+
+### 🌐 Connect with Me
+
+- GitHub: https://github.com/zunaira0411
+- LinkedIn: https://www.linkedin.com/in/zunaira-fatima-81a9bb402/
