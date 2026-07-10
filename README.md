@@ -11,9 +11,9 @@
 
 # 📖 About the Project
 
-Smart Inventory Tracker is a modern Inventory Management System designed to simplify inventory operations for businesses. It provides an interactive dashboard to monitor inventory, manage products, track stock levels, and visualize inventory insights.
+Smart Inventory Tracker is a modern Inventory Management System designed to simplify inventory operations for businesses. It provides an interactive dashboard to monitor inventory, manage products, suppliers, stock levels, and visualize inventory insights.
 
-This project is currently being developed as part of my **Web Development Internship at Abreonix**. Future updates will include backend integration, authentication, supplier management, warehouse management, reports, and deployment.
+This project is currently being developed as part of my **Web Development Internship at Abreonix**. Future updates will include warehouse management, purchase orders, reports, backend integration, authentication, and deployment.
 
 ---
 
@@ -64,12 +64,29 @@ This project is currently being developed as part of my **Web Development Intern
 
 ---
 
+## 🚚 Supplier Management
+
+- View Suppliers
+- Add New Supplier
+- Edit Supplier
+- Delete Supplier
+- View Supplier Details
+- Search Suppliers
+- Local Storage Support
+- Toast Notifications
+- SweetAlert Confirmation Dialogs
+
+---
+
 ## 🎨 UI Features
 
 - Responsive Design
 - Modern Dashboard Layout
 - Sidebar Navigation
 - Clean User Interface
+- Responsive Tables
+- Modal Forms
+- Interactive Buttons
 
 ---
 
@@ -80,10 +97,12 @@ This project is currently being developed as part of my **Web Development Intern
 - Login
 - Dashboard
 - Product Management
+- Supplier Management
 - Search Functionality
-- Category Filter
 - Product Sorting
+- Category Filter
 - Product Details Modal
+- Supplier Details Modal
 - Local Storage Integration
 - Responsive User Interface
 
@@ -91,7 +110,6 @@ This project is currently being developed as part of my **Web Development Intern
 
 ## 🚀 Upcoming Modules
 
-- Suppliers Management
 - Warehouses Management
 - Purchase Orders
 - Reports & Analytics
@@ -99,6 +117,7 @@ This project is currently being developed as part of my **Web Development Intern
 - Settings
 - Notifications
 - Dark Mode
+- Backend Integration
 
 ---
 
@@ -153,12 +172,15 @@ Smart Inventory Tracker
 │   ├── components
 │   │   ├── dashboard
 │   │   ├── layout
-│   │   └── products
+│   │   ├── products
+│   │   ├── suppliers
+│   │   └── common
 │   │
 │   ├── pages
+│   │   ├── Login.jsx
 │   │   ├── Dashboard.jsx
 │   │   ├── Products.jsx
-│   │   └── Login.jsx
+│   │   └── Suppliers.jsx
 │   │
 │   ├── styles
 │   ├── App.jsx
@@ -216,6 +238,7 @@ npm run dev
 ## 📦 Products Page
 
 ![Products](screenshots/product1.png)
+
 ![Products](screenshots/product2.png)
 
 ---
@@ -226,6 +249,20 @@ npm run dev
 
 ---
 
+## 🚚 Suppliers
+
+![Suppliers](screenshots/supplier1.png)
+
+![Suppliers](screenshots/supplier2.png)
+
+---
+
+## 👁️ Supplier Details
+
+![Supplier Details](screenshots/supplier-details.png)
+
+---
+
 # 📊 Project Progress
 
 | Module | Status |
@@ -233,8 +270,8 @@ npm run dev
 | Login | ✅ Completed |
 | Dashboard | ✅ Completed |
 | Products | ✅ Completed |
-| Suppliers | ⏳ In Progress |
-| Warehouses | ⏳ Pending |
+| Suppliers | ✅ Completed |
+| Warehouses | ⏳ In Progress |
 | Purchase Orders | ⏳ Pending |
 | Reports | ⏳ Pending |
 | Backend | ⏳ Pending |
@@ -244,14 +281,14 @@ npm run dev
 
 # 🎯 Future Scope
 
-- Backend Integration
-- PostgreSQL Database
-- JWT Authentication
-- Supplier Management
 - Warehouse Management
 - Purchase Orders
 - Reports & Analytics
+- Backend Integration
+- PostgreSQL Database
+- JWT Authentication
 - Export to Excel
+- Export Reports as PDF
 - Image Upload
 - User Authentication
 - Dark Theme
@@ -263,9 +300,9 @@ npm run dev
 
 **Zunaira Fatima**
 
-🎓 BCA IBM
+🎓 **BCA IBM**
 
-🏫 United University
+🏫 **United University**
 
 Developed as a part of the **Abreonix Web Development Internship**.
 
