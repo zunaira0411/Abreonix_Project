@@ -1,8 +1,8 @@
 # 📦 Smart Inventory Tracker
 
-> A modern and responsive Inventory Management System developed during my **Web Development Internship at Abreonix** using **React.js**.
+> A modern and responsive Inventory Management System developed during my **Web Development Internship at Abreonix** using **React.js** and **Vite**.
 
-![Project Status](https://img.shields.io/badge/Status-Frontend%20In%20Progress-blue)
+![Project Status](https://img.shields.io/badge/Status-Frontend%20Completed-success)
 ![React](https://img.shields.io/badge/React-19-blue?logo=react)
 ![Vite](https://img.shields.io/badge/Vite-Frontend-purple?logo=vite)
 ![License](https://img.shields.io/badge/License-MIT-green)
@@ -11,18 +11,21 @@
 
 # 📖 About the Project
 
-Smart Inventory Tracker is a modern Inventory Management System designed to simplify inventory operations for businesses. It provides an interactive dashboard to monitor inventory, manage products, suppliers, stock levels, and visualize inventory insights.
+Smart Inventory Tracker is a modern Inventory Management System that helps businesses efficiently manage products, suppliers, warehouses, inventory, purchase orders, and reports through an interactive dashboard.
 
-This project is currently being developed as part of my **Web Development Internship at Abreonix**. Future updates will include warehouse management, purchase orders, reports, backend integration, authentication, and deployment.
+The application provides complete CRUD operations with Local Storage support, interactive charts, report generation, CSV export, responsive design, and modern UI components.
+
+This project is developed as part of my **Web Development Internship at Abreonix**.
 
 ---
 
-# ✨ Current Features
+# ✨ Features
 
 ## 🔐 Authentication
 
-- Modern Login Interface
-- Responsive Login Design
+- Login Page
+- Register Page
+- Responsive Authentication Interface
 
 ---
 
@@ -30,19 +33,11 @@ This project is currently being developed as part of my **Web Development Intern
 
 - Dashboard Overview
 - Statistics Cards
-- Total Products
-- Total Suppliers
-- Total Warehouses
-- Low Stock Overview
-- Inventory Overview Line Chart
-- Stock Distribution Pie Chart
-- Recent Purchase Orders
+- Inventory Overview
+- Stock Distribution Charts
 - Recent Activities
-- Top Selling Products
-- Low Stock Alerts
-- Inventory Health Progress
-- Welcome Banner
 - Quick Action Buttons
+- Inventory Health
 - Export Dashboard as PDF
 
 ---
@@ -50,7 +45,7 @@ This project is currently being developed as part of my **Web Development Intern
 ## 📦 Product Management
 
 - View Products
-- Add New Product
+- Add Product
 - Edit Product
 - Delete Product
 - View Product Details
@@ -67,7 +62,7 @@ This project is currently being developed as part of my **Web Development Intern
 ## 🚚 Supplier Management
 
 - View Suppliers
-- Add New Supplier
+- Add Supplier
 - Edit Supplier
 - Delete Supplier
 - View Supplier Details
@@ -78,61 +73,66 @@ This project is currently being developed as part of my **Web Development Intern
 
 ---
 
-## 🎨 UI Features
+## 🏢 Warehouse Management
+
+- View Warehouses
+- Add Warehouse
+- Edit Warehouse
+- Delete Warehouse
+- View Warehouse Details
+- Search Warehouses
+- Local Storage Support
+
+---
+
+## 📦 Inventory Management
+
+- View Inventory
+- Add Inventory
+- Edit Inventory
+- Delete Inventory
+- Search Inventory
+- Stock Status
+- Local Storage Support
+
+---
+
+## 🛒 Purchase Orders
+
+- View Purchase Orders
+- Add Purchase Order
+- Edit Purchase Order
+- Delete Purchase Order
+- View Order Details
+- Search Purchase Orders
+- Order Status
+- Local Storage Support
+
+---
+
+## 📈 Reports & Analytics
+
+- Dashboard Summary Cards
+- Bar Chart
+- Pie Chart
+- Search Reports
+- View Report Details
+- Export Reports to CSV
+
+---
+
+## 🎨 User Interface
 
 - Responsive Design
-- Modern Dashboard Layout
 - Sidebar Navigation
-- Clean User Interface
+- Modern Dashboard Layout
+- Interactive Charts
 - Responsive Tables
 - Modal Forms
-- Interactive Buttons
-
----
-
-# 🚧 Current Project Status
-
-## ✅ Completed Modules
-
-- Login
-- Dashboard
-- Product Management
-- Supplier Management
 - Search Functionality
-- Product Sorting
-- Category Filter
-- Product Details Modal
-- Supplier Details Modal
-- Local Storage Integration
-- Responsive User Interface
-
----
-
-## 🚀 Upcoming Modules
-
-- Warehouses Management
-- Purchase Orders
-- Reports & Analytics
-- User Profile
-- Settings
-- Notifications
-- Dark Mode
-- Backend Integration
-
----
-
-# 🌐 Backend (Upcoming)
-
-The following technologies will be integrated in future versions:
-
-- Node.js
-- Express.js
-- PostgreSQL
-- REST APIs
-- JWT Authentication
-- CRUD Operations
-- File Upload
-- Dashboard APIs
+- SweetAlert2 Dialogs
+- Toast Notifications
+- Local Storage Persistence
 
 ---
 
@@ -151,14 +151,13 @@ The following technologies will be integrated in future versions:
 
 - React Router DOM
 - React Icons
+- React Toastify
+- SweetAlert2
 - Chart.js
 - React ChartJS 2
-- jsPDF
 - html2canvas
-- SweetAlert2
-- React Toastify
-
----
+- jsPDF
+- File Saver---
 
 # 📂 Project Structure
 
@@ -169,20 +168,31 @@ Smart Inventory Tracker
 │
 ├── src
 │   ├── assets
+│   │
 │   ├── components
 │   │   ├── dashboard
+│   │   ├── inventory
 │   │   ├── layout
 │   │   ├── products
+│   │   ├── purchaseOrders
+│   │   ├── reports
 │   │   ├── suppliers
-│   │   └── common
+│   │   └── warehouses
 │   │
 │   ├── pages
-│   │   ├── Login.jsx
 │   │   ├── Dashboard.jsx
+│   │   ├── Inventory.jsx
+│   │   ├── Login.jsx
 │   │   ├── Products.jsx
-│   │   └── Suppliers.jsx
+│   │   ├── Profile.jsx
+│   │   ├── PurchaseOrders.jsx
+│   │   ├── Register.jsx
+│   │   ├── Reports.jsx
+│   │   ├── Suppliers.jsx
+│   │   └── Warehouses.jsx
 │   │
 │   ├── styles
+│   │
 │   ├── App.jsx
 │   └── main.jsx
 │
@@ -195,25 +205,25 @@ Smart Inventory Tracker
 
 # 🚀 Installation
 
-Clone the repository
+### Clone the repository
 
 ```bash
 git clone https://github.com/zunaira0411/Abreonix_Project.git
 ```
 
-Move into the project folder
+### Navigate to the project folder
 
 ```bash
 cd Abreonix_Project
 ```
 
-Install dependencies
+### Install dependencies
 
 ```bash
 npm install
 ```
 
-Run the development server
+### Run the development server
 
 ```bash
 npm run dev
@@ -223,43 +233,19 @@ npm run dev
 
 # 📸 Screenshots
 
-## 🔐 Login Page
+> Screenshots will be added after completing the final UI.
 
-![Login](screenshots/login.png)
-
----
-
-## 📊 Dashboard
-
-![Dashboard](screenshots/dashboard.png)
-
----
-
-## 📦 Products Page
-
-![Products](screenshots/product1.png)
-
-![Products](screenshots/product2.png)
-
----
-
-## 👁️ Product Details
-
-![Product Details](screenshots/product-details.png)
-
----
-
-## 🚚 Suppliers
-
-![Suppliers](screenshots/supplier1.png)
-
-![Suppliers](screenshots/supplier2.png)
-
----
-
-## 👁️ Supplier Details
-
-![Supplier Details](screenshots/supplier-details.png)
+- Login Page
+- Register Page
+- Dashboard
+- Products
+- Suppliers
+- Warehouses
+- Inventory
+- Purchase Orders
+- Reports Dashboard
+- Charts
+- Report Details Modal
 
 ---
 
@@ -268,31 +254,51 @@ npm run dev
 | Module | Status |
 |---------|--------|
 | Login | ✅ Completed |
+| Register | ✅ Completed |
 | Dashboard | ✅ Completed |
 | Products | ✅ Completed |
 | Suppliers | ✅ Completed |
-| Warehouses | ⏳ In Progress |
-| Purchase Orders | ⏳ Pending |
-| Reports | ⏳ Pending |
-| Backend | ⏳ Pending |
-| Deployment | ⏳ Pending |
+| Warehouses | ✅ Completed |
+| Inventory | ✅ Completed |
+| Purchase Orders | ✅ Completed |
+| Reports | ✅ Completed |
+| CSV Export | ✅ Completed |
+| Charts | ✅ Completed |
+| Backend | ⏳ Planned |
+| Deployment | ⏳ Planned |
 
 ---
 
-# 🎯 Future Scope
+# 🚀 Future Enhancements
 
-- Warehouse Management
-- Purchase Orders
-- Reports & Analytics
+- Professional Home / Landing Page
+- Dynamic Dashboard Analytics
+- User Profile Improvements
+- Notification System
+- Dark Mode
 - Backend Integration
+- Node.js & Express.js
 - PostgreSQL Database
 - JWT Authentication
-- Export to Excel
-- Export Reports as PDF
+- REST APIs
 - Image Upload
-- User Authentication
-- Dark Theme
+- PDF Report Export
 - Cloud Deployment
+
+---
+
+# 🌐 Backend (Future Scope)
+
+The following technologies are planned for future integration:
+
+- Node.js
+- Express.js
+- PostgreSQL
+- REST APIs
+- JWT Authentication
+- CRUD APIs
+- File Upload
+- Authentication System
 
 ---
 
@@ -300,17 +306,25 @@ npm run dev
 
 **Zunaira Fatima**
 
-🎓 **BCA IBM**
+🎓 BCA IBM Student
 
-🏫 **United University**
+🏫 United University
 
-Developed as a part of the **Abreonix Web Development Internship**.
+💼 Developed as part of the **Abreonix Web Development Internship**
+
+---
+
+# 🤝 Contributing
+
+Contributions, suggestions, and feedback are welcome.
+
+Feel free to fork this repository and create a pull request.
 
 ---
 
 # ⭐ Support
 
-If you like this project, please consider giving it a ⭐ on GitHub.
+If you like this project, don't forget to give it a ⭐ on GitHub.
 
 ---
 
