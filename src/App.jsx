@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
+import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
@@ -15,12 +16,21 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Navigate to="/login" />} />
 
+        {/* Default Route */}
+        <Route path="/" element={<Navigate to="/home" />} />
+
+        {/* Home */}
+        <Route path="/home" element={<Home />} />
+
+        {/* Authentication */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
+        {/* Dashboard */}
         <Route path="/dashboard" element={<Dashboard />} />
+
+        {/* Modules */}
         <Route path="/products" element={<Products />} />
         <Route path="/suppliers" element={<Suppliers />} />
         <Route path="/warehouses" element={<Warehouses />} />
@@ -28,6 +38,10 @@ function App() {
         <Route path="/purchase-orders" element={<PurchaseOrders />} />
         <Route path="/reports" element={<Reports />} />
         <Route path="/profile" element={<Profile />} />
+
+        {/* Invalid Route */}
+        <Route path="*" element={<Navigate to="/home" />} />
+
       </Routes>
     </BrowserRouter>
   );

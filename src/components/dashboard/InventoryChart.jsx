@@ -1,25 +1,76 @@
 import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
   Tooltip,
-  ResponsiveContainer,
-  Label,
-} from "recharts";
+  Legend,
+} from "chart.js";
+
+import { Line } from "react-chartjs-2";
 
 import "../../styles/charts.css";
 
-const data = [
-  { month: "Jan", stock: 420 },
-  { month: "Feb", stock: 510 },
-  { month: "Mar", stock: 620 },
-  { month: "Apr", stock: 580 },
-  { month: "May", stock: 720 },
-  { month: "Jun", stock: 810 },
-  { month: "Jul", stock: 900 },
-];
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
+
+const data = {
+  labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
+  datasets: [
+    {
+      label: "Stock Quantity",
+      data: [420, 510, 620, 580, 720, 810, 900],
+      borderColor: "#2563EB",
+      backgroundColor: "rgba(37,99,235,0.2)",
+      borderWidth: 3,
+      pointRadius: 5,
+      pointHoverRadius: 7,
+      tension: 0.4,
+      fill: true,
+    },
+  ],
+};
+
+const options = {
+  responsive: true,
+  maintainAspectRatio: false,
+
+  plugins: {
+    legend: {
+      display: false,
+    },
+
+    title: {
+      display: false,
+    },
+  },
+
+  scales: {
+    x: {
+      title: {
+        display: true,
+        text: "Months",
+      },
+    },
+
+    y: {
+      title: {
+        display: true,
+        text: "Stock Quantity",
+      },
+      beginAtZero: true,
+    },
+  },
+};
 
 function InventoryChart() {
   return (
@@ -30,47 +81,7 @@ function InventoryChart() {
       </div>
 
       <div className="chart-body">
-        <ResponsiveContainer width="100%" height="100%">
-          <LineChart
-            data={data}
-            margin={{
-              top: 20,
-              right: 30,
-              left: 20,
-              bottom: 30,
-            }}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-
-            <XAxis dataKey="month">
-              <Label
-                value="Months"
-                position="insideBottom"
-                offset={-10}
-              />
-            </XAxis>
-
-            <YAxis>
-              <Label
-                value="Stock Quantity"
-                angle={-90}
-                position="insideLeft"
-                style={{ textAnchor: "middle" }}
-              />
-            </YAxis>
-
-            <Tooltip />
-
-            <Line
-              type="monotone"
-              dataKey="stock"
-              stroke="#2563EB"
-              strokeWidth={3}
-              dot={{ r: 5 }}
-              activeDot={{ r: 8 }}
-            />
-          </LineChart>
-        </ResponsiveContainer>
+        <Line data={data} options={options} />
       </div>
     </div>
   );
