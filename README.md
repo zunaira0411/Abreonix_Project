@@ -3,6 +3,7 @@
 > A modern and responsive Inventory Management System developed during my **Web Development Internship at Abreonix** using **React.js** and **Vite**.
 
 ![Project Status](https://img.shields.io/badge/Status-Frontend%20Completed-success)
+![Version](https://img.shields.io/badge/Version-v1.0-blue)
 ![React](https://img.shields.io/badge/React-19-blue?logo=react)
 ![Vite](https://img.shields.io/badge/Vite-Frontend-purple?logo=vite)
 ![License](https://img.shields.io/badge/License-MIT-green)
@@ -11,15 +12,30 @@
 
 # 📖 About the Project
 
-Smart Inventory Tracker is a modern Inventory Management System that helps businesses efficiently manage products, suppliers, warehouses, inventory, purchase orders, and reports through an interactive dashboard.
+Smart Inventory Tracker is a modern and responsive Inventory Management System designed to simplify inventory operations for businesses.
 
-The application provides complete CRUD operations with Local Storage support, interactive charts, report generation, CSV export, responsive design, and modern UI components.
+The application provides an intuitive dashboard to manage products, suppliers, warehouses, inventory, purchase orders, and reports from one centralized platform.
 
-This project is developed as part of my **Web Development Internship at Abreonix**.
+It includes a professional landing page, authentication system, interactive dashboard, charts, CRUD operations using Local Storage, report generation, CSV export, PDF export, responsive layouts, and a clean user interface.
+
+This project was developed as part of my **Web Development Internship at Abreonix** to strengthen my frontend development skills using React.js and modern web technologies.
 
 ---
 
 # ✨ Features
+
+## 🏠 Home Page
+
+- Professional Landing Page
+- Responsive Navigation Bar
+- Hero Section
+- About Section
+- Features Section
+- Statistics Section
+- Call To Action Section
+- Modern Responsive Design
+
+---
 
 ## 🔐 Authentication
 
@@ -31,12 +47,14 @@ This project is developed as part of my **Web Development Internship at Abreonix
 
 ## 📊 Dashboard
 
-- Dashboard Overview
-- Statistics Cards
-- Inventory Overview
-- Stock Distribution Charts
-- Recent Activities
+- Welcome Banner
+- Dashboard Statistics Cards
+- Inventory Overview Line Chart
+- Stock Distribution Pie Chart
 - Quick Action Buttons
+- Recent Orders
+- Low Stock Alerts
+- Top Selling Products
 - Inventory Health
 - Export Dashboard as PDF
 
@@ -113,21 +131,21 @@ This project is developed as part of my **Web Development Internship at Abreonix
 ## 📈 Reports & Analytics
 
 - Dashboard Summary Cards
-- Bar Chart
-- Pie Chart
+- Interactive Charts
+- Report Details
 - Search Reports
-- View Report Details
-- Export Reports to CSV
+- Download Reports
+- CSV Export
 
 ---
 
 ## 🎨 User Interface
 
-- Responsive Design
-- Sidebar Navigation
-- Modern Dashboard Layout
-- Interactive Charts
+- Professional Landing Page
+- Responsive Dashboard
 - Responsive Tables
+- Modern Cards
+- Interactive Charts
 - Modal Forms
 - Search Functionality
 - SweetAlert2 Dialogs
@@ -157,7 +175,9 @@ This project is developed as part of my **Web Development Internship at Abreonix
 - React ChartJS 2
 - html2canvas
 - jsPDF
-- File Saver---
+- File Saver
+
+---
 
 # 📂 Project Structure
 
@@ -171,6 +191,7 @@ Smart Inventory Tracker
 │   │
 │   ├── components
 │   │   ├── dashboard
+│   │   ├── home
 │   │   ├── inventory
 │   │   ├── layout
 │   │   ├── products
@@ -180,6 +201,7 @@ Smart Inventory Tracker
 │   │   └── warehouses
 │   │
 │   ├── pages
+│   │   ├── Home.jsx
 │   │   ├── Dashboard.jsx
 │   │   ├── Inventory.jsx
 │   │   ├── Login.jsx
@@ -202,28 +224,27 @@ Smart Inventory Tracker
 ```
 
 ---
-
 # 🚀 Installation
 
-### Clone the repository
+### Clone the Repository
 
 ```bash
 git clone https://github.com/zunaira0411/Abreonix_Project.git
 ```
 
-### Navigate to the project folder
+### Navigate to the Project Folder
 
 ```bash
 cd Abreonix_Project
 ```
 
-### Install dependencies
+### Install Dependencies
 
 ```bash
 npm install
 ```
 
-### Run the development server
+### Start Development Server
 
 ```bash
 npm run dev
@@ -233,19 +254,20 @@ npm run dev
 
 # 📸 Screenshots
 
-> Screenshots will be added after completing the final UI.
+The project contains the following user interface pages and modules:
 
-- Login Page
-- Register Page
-- Dashboard
-- Products
-- Suppliers
-- Warehouses
-- Inventory
-- Purchase Orders
-- Reports Dashboard
-- Charts
-- Report Details Modal
+- 🏠 Home Page
+- 🔐 Login Page
+- 📝 Register Page
+- 📊 Dashboard
+- 📦 Products Module
+- 🚚 Suppliers Module
+- 🏢 Warehouses Module
+- 📦 Inventory Module
+- 🛒 Purchase Orders Module
+- 📈 Reports Dashboard
+
+> Screenshots can be added inside a **screenshots/** folder for better project presentation.
 
 ---
 
@@ -253,6 +275,7 @@ npm run dev
 
 | Module | Status |
 |---------|--------|
+| Home Page | ✅ Completed |
 | Login | ✅ Completed |
 | Register | ✅ Completed |
 | Dashboard | ✅ Completed |
@@ -262,8 +285,10 @@ npm run dev
 | Inventory | ✅ Completed |
 | Purchase Orders | ✅ Completed |
 | Reports | ✅ Completed |
-| CSV Export | ✅ Completed |
 | Charts | ✅ Completed |
+| CSV Export | ✅ Completed |
+| PDF Export | ✅ Completed |
+| Profile | 🚧 In Progress |
 | Backend | ⏳ Planned |
 | Deployment | ⏳ Planned |
 
@@ -271,46 +296,58 @@ npm run dev
 
 # 🚀 Future Enhancements
 
-- Professional Home / Landing Page
-- Dynamic Dashboard Analytics
-- User Profile Improvements
-- Notification System
-- Dark Mode
+The following features are planned for future development:
+
+- Complete User Profile Module
 - Backend Integration
 - Node.js & Express.js
 - PostgreSQL Database
-- JWT Authentication
 - REST APIs
+- JWT Authentication
 - Image Upload
-- PDF Report Export
+- Notification System
+- Dark Mode
+- Advanced Dashboard Analytics
 - Cloud Deployment
 
 ---
 
 # 🌐 Backend (Future Scope)
 
-The following technologies are planned for future integration:
+The current project focuses on frontend development.
+
+The backend implementation will include:
 
 - Node.js
 - Express.js
-- PostgreSQL
+- PostgreSQL Database
 - REST APIs
-- JWT Authentication
-- CRUD APIs
-- File Upload
 - Authentication System
-
----
+- JWT Authorization
+- CRUD APIs
+- File Upload Support
 
 ---
 
 # 📌 Project Status
 
-This project is currently completed at the frontend level and includes all major inventory management modules.
+Smart Inventory Tracker is currently completed at the **Frontend Level**.
 
-The next phase of development will focus on:
+### Completed Modules
 
-- Home / Landing Page
+- Responsive Home Page
+- Authentication
+- Dashboard
+- Products
+- Suppliers
+- Warehouses
+- Inventory
+- Purchase Orders
+- Reports
+
+### Upcoming Development
+
+- Profile Module
 - Backend Integration
 - Database Connectivity
 - Authentication APIs
@@ -326,23 +363,31 @@ The next phase of development will focus on:
 
 🏫 United University
 
-💼 Developed as part of the **Abreonix Web Development Internship**
-
-📧 Feel free to connect with me on LinkedIn and GitHub.
+💼 Developed during **Web Development Internship at Abreonix**
 
 ---
 
 # ⭐ Acknowledgement
 
-This project was developed during my **Web Development Internship at Abreonix** to strengthen my frontend development skills using React.js and modern web technologies.
+This project was developed during my **Web Development Internship at Abreonix** to improve my React.js frontend development skills and gain practical experience in building modern web applications.
 
 ---
 
 # 📜 License
 
-This project is created for **educational, learning, and internship purposes**.
+This project is created for **educational, learning, and internship purposes only.**
 
-### 🌐 Connect with Me
+---
 
-- GitHub: https://github.com/zunaira0411
-- LinkedIn: https://www.linkedin.com/in/zunaira-fatima-81a9bb402/
+# 🌐 Connect With Me
+
+- **GitHub:** https://github.com/zunaira0411
+- **LinkedIn:** https://www.linkedin.com/in/zunaira-fatima-81a9bb402/
+
+---
+
+# ⭐ If you like this project
+
+If you found this project helpful, consider giving it a ⭐ on GitHub.
+
+Thank you for visiting my repository! 😊
