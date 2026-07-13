@@ -1,5 +1,6 @@
-
 import { useState, useEffect } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 import Layout from "../components/layout/Layout";
 import ProductHeader from "../components/products/ProductHeader";
@@ -20,62 +21,36 @@ function Products() {
 
   const [viewProduct, setViewProduct] = useState(null);
 
-  const defaultProducts = [
-    {
-      id: "PRD-1001",
-      name: "Laptop",
-      category: "Electronics",
-      supplier: "Dell",
-      warehouse: "Warehouse A",
-      stock: 45,
-      price: "₹55000",
-      status: "In Stock",
-    },
-    {
-      id: "PRD-1002",
-      name: "Keyboard",
-      category: "Accessories",
-      supplier: "Logitech",
-      warehouse: "Warehouse B",
-      stock: 8,
-      price: "₹1500",
-      status: "Low Stock",
-    },
-    {
-      id: "PRD-1003",
-      name: "Monitor",
-      category: "Electronics",
-      supplier: "HP",
-      warehouse: "Warehouse A",
-      stock: 20,
-      price: "₹12000",
-      status: "In Stock",
-    },
-    {
-      id: "PRD-1004",
-      name: "Printer",
-      category: "Office",
-      supplier: "Canon",
-      warehouse: "Warehouse C",
-      stock: 0,
-      price: "₹18000",
-      status: "Out of Stock",
-    },
-  ];
-  const [products, setProducts] = useState(() => {
-    const savedProducts = localStorage.getItem("products");
+const [products, setProducts] = useState([]);
 
-    return savedProducts
-      ? JSON.parse(savedProducts)
-      : defaultProducts;
-  });
-  useEffect(() => {
-    localStorage.setItem(
-      "products",
-      JSON.stringify(products)
+const [loading, setLoading] = useState(true);
+
+const fetchProducts = async () => {
+  try {
+    const res = await axios.get(
+      "http://localhost:5000/api/products"
     );
-  }, [products]);
 
+    const formattedProducts = res.data.map((product) => ({
+      ...product,
+      id: product.id,
+      productId: product.product_id,
+      price: `₹${product.price}`,
+    }));
+
+    setProducts(formattedProducts);
+
+  } catch (error) {
+    toast.error("Failed to load products");
+    console.log(error);
+  } finally {
+    setLoading(false);
+  }
+};
+
+useEffect(() => {
+  fetchProducts();
+}, []);
 
   // 🔍 Search Filter
 const filteredProducts = [...products]
@@ -136,9 +111,9 @@ const filteredProducts = [...products]
       />
 
       <ProductTable
+        loading={loading}
+        fetchProducts={fetchProducts}
         products={filteredProducts}
-        allProducts={products}
-        setProducts={setProducts}
         onEdit={(product) => {
           setEditingProduct(product);
           setIsModalOpen(true);
@@ -147,13 +122,12 @@ const filteredProducts = [...products]
       />
 
       <ProductModal
+        fetchProducts={fetchProducts}
         isOpen={isModalOpen}
         onClose={() => {
           setEditingProduct(null);
           setIsModalOpen(false);
         }}
-        products={products}
-        setProducts={setProducts}
         editingProduct={editingProduct}
       />
       {viewProduct && (

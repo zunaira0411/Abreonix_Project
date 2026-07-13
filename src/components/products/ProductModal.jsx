@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
 import { toast } from "react-toastify";
 import "../../styles/products.css";
 
 function ProductModal({
   isOpen,
   onClose,
-  products,
-  setProducts,
+  fetchProducts,
   editingProduct,
 }) {
   const [formData, setFormData] = useState({
@@ -27,7 +27,7 @@ function ProductModal({
         category: editingProduct.category,
         supplier: editingProduct.supplier,
         warehouse: editingProduct.warehouse,
-        price: editingProduct.price.replace("₹", ""),
+        price: editingProduct.price.toString().replace("₹", ""),
         stock: editingProduct.stock,
         barcode: editingProduct.barcode || "",
         description: editingProduct.description || "",
@@ -55,7 +55,7 @@ function ProductModal({
     });
   };
 
-  const saveProduct = (e) => {
+  const saveProduct = async (e) => {
     e.preventDefault();
 
     if (
@@ -70,73 +70,52 @@ function ProductModal({
       return;
     }
 
-    let status = "In Stock";
+    try {
+      if (editingProduct) {
+        await axios.put(
+          `http://localhost:5000/api/products/${editingProduct.id}`,
+          {
+            ...formData,
+            stock: Number(formData.stock),
+            price: Number(formData.price),
+          }
+        );
 
-    if (Number(formData.stock) === 0) {
-      status = "Out of Stock";
-    } else if (Number(formData.stock) < 10) {
-      status = "Low Stock";
+        toast.success("Product Updated Successfully!");
+      } else {
+        await axios.post(
+          "http://localhost:5000/api/products",
+          {
+            ...formData,
+            stock: Number(formData.stock),
+            price: Number(formData.price),
+          }
+        );
+
+        toast.success("Product Added Successfully!");
+      }
+
+      await fetchProducts();
+
+      setFormData({
+        name: "",
+        category: "",
+        supplier: "",
+        warehouse: "",
+        price: "",
+        stock: "",
+        barcode: "",
+        description: "",
+      });
+
+      onClose();
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong!");
     }
+  };
 
-    if (editingProduct) {
-      const updatedProducts = products.map((product) =>
-        product.id === editingProduct.id
-          ? {
-              ...product,
-              name: formData.name,
-              category: formData.category,
-              supplier: formData.supplier,
-              warehouse: formData.warehouse,
-              stock: Number(formData.stock),
-              price: `₹${formData.price}`,
-              barcode: formData.barcode,
-              description: formData.description,
-              status,
-            }
-          : product
-      );
-
-      setProducts(updatedProducts);
-
-      toast.success("Product Updated Successfully!");
-    } else {
-      const lastProduct = products[products.length - 1];
-
-      const nextId = lastProduct
-        ? `PRD-${Number(lastProduct.id.split("-")[1]) + 1}`
-        : "PRD-1001";
-
-      const newProduct = {
-        id: nextId,
-        name: formData.name,
-        category: formData.category,
-        supplier: formData.supplier,
-        warehouse: formData.warehouse,
-        stock: Number(formData.stock),
-        price: `₹${formData.price}`,
-        barcode: formData.barcode,
-        description: formData.description,
-        status,
-      };
-
-      setProducts([...products, newProduct]);
-
-      toast.success("Product Added Successfully!");
-    }
-
-    setFormData({
-      name: "",
-      category: "",
-      supplier: "",
-      warehouse: "",
-      price: "",
-      stock: "",
-      barcode: "",
-      description: "",
-    });
-
-    onClose();
-  };  return (
+  return (
     <div className="modal-overlay">
       <div className="product-modal">
 
@@ -208,9 +187,7 @@ function ProductModal({
               onChange={handleChange}
               placeholder="Warehouse Name"
             />
-          </div>
-
-          <div className="form-group">
+          </div>          <div className="form-group">
             <label>Price (₹)</label>
 
             <input
