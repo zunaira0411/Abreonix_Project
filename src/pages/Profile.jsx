@@ -1,27 +1,14 @@
-import { useState } from "react";
-
 import Layout from "../components/layout/Layout";
-import ProductHeader from "../components/products/ProductHeader";
-import ProductTable from "../components/products/ProductTable";
-import ProductModal from "../components/products/ProductModal";
+import ProfileCard from "../components/profile/ProfileCard";
 
-function Products() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
+function Profile() {
   return (
     <Layout>
-      <ProductHeader
-        onAddProduct={() => setIsModalOpen(true)}
-      />
 
-      <ProductTable />
+      <ProfileCard />
 
-      <ProductModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      />
     </Layout>
   );
 }
 
-export default Products;
+export default Profile;
