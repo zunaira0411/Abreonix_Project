@@ -1,8 +1,9 @@
 const pool = require("../config/db");
 
 // Get Profile
-const getProfile = async () => {
-  const result = await pool.query(`
+const getProfile = async (id) => {
+  const result = await pool.query(
+    `
     SELECT
       id,
       full_name,
@@ -11,9 +12,10 @@ const getProfile = async () => {
       role,
       address
     FROM users
-    ORDER BY id ASC
-    LIMIT 1
-  `);
+    WHERE id = $1
+    `,
+    [id]
+  );
 
   return result.rows[0];
 };
@@ -29,15 +31,17 @@ const updateProfile = async (id, user) => {
   } = user;
 
   const result = await pool.query(
-    `UPDATE users
-     SET
-      full_name=$1,
-      email=$2,
-      phone=$3,
-      role=$4,
-      address=$5
-     WHERE id=$6
-     RETURNING *`,
+    `
+    UPDATE users
+    SET
+      full_name = $1,
+      email = $2,
+      phone = $3,
+      role = $4,
+      address = $5
+    WHERE id = $6
+    RETURNING *
+    `,
     [
       full_name,
       email,

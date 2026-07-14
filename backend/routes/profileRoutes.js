@@ -7,7 +7,7 @@ const {
   updateProfile,
 } = require("../controllers/profileController");
 
-router.get("/", getProfile);
+router.get("/:id", getProfile);
 
 router.put("/:id", updateProfile);
 

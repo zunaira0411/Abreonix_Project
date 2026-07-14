@@ -19,11 +19,17 @@ function ProfileCard() {
   // Load Profile from Backend
   const fetchProfile = async () => {
     try {
+
+      const loggedInUser = JSON.parse(
+        localStorage.getItem("user")
+      );
+
       const res = await axios.get(
-        "http://localhost:5000/api/profile"
+        `http://localhost:5000/api/profile/${loggedInUser.id}`
       );
 
       setUser(res.data);
+      
     } catch (error) {
       console.log(error);
       toast.error("Failed to load profile");

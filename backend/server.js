@@ -22,14 +22,14 @@ app.get("/", (req, res) => {
   res.send("🚀 Smart Inventory Tracker Backend Running...");
 });
 
-app.use("/api/auth", authRoutes);
+
 app.use("/api/products", productRoutes);
 app.use("/api/suppliers", supplierRoutes);
 app.use("/api/warehouses", warehouseRoutes);
 app.use("/api/purchase-orders", purchaseOrderRoutes);
 app.use("/api/inventory", inventoryRoutes);
 app.use("/api/reports", reportRoutes);
-app.use("/api/profile", profileRoutes);
+
 
 // Authentication Routes
 app.use("/api/auth", authRoutes);

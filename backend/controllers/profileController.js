@@ -3,8 +3,13 @@ const profileModel = require("../models/profileModel");
 // GET Profile
 const getProfile = async (req, res) => {
   try {
-    const user =
-      await profileModel.getProfile();
+    const user = await profileModel.getProfile(req.params.id);
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
 
     res.json(user);
   } catch (error) {
@@ -17,16 +22,12 @@ const getProfile = async (req, res) => {
 };
 
 // UPDATE Profile
-const updateProfile = async (
-  req,
-  res
-) => {
+const updateProfile = async (req, res) => {
   try {
-    const user =
-      await profileModel.updateProfile(
-        req.params.id,
-        req.body
-      );
+    const user = await profileModel.updateProfile(
+      req.params.id,
+      req.body
+    );
 
     res.json(user);
   } catch (error) {
