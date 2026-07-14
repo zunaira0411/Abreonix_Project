@@ -1,3 +1,4 @@
+import axios from "axios";
 import Swal from "sweetalert2";
 import { FaEye } from "react-icons/fa";
 import "../../styles/purchaseOrders.css";
@@ -8,8 +9,11 @@ function PurchaseOrderTable({
   setOrders,
   onEdit,
   onView,
+  fetchOrders,
 }) {
+
   const deleteOrder = (id) => {
+
     Swal.fire({
       title: "Delete Purchase Order?",
       text: "This action cannot be undone!",
@@ -20,41 +24,72 @@ function PurchaseOrderTable({
       confirmButtonText: "Yes, Delete",
       cancelButtonText: "Cancel",
       reverseButtons: true,
-    }).then((result) => {
+    }).then(async (result) => {
+
       if (result.isConfirmed) {
-        const updatedOrders = allOrders.filter(
-          (order) => order.id !== id
-        );
 
-        setOrders(updatedOrders);
+        try {
 
-        Swal.fire({
-          title: "Deleted!",
-          text: "Purchase Order deleted successfully.",
-          icon: "success",
-          timer: 1800,
-          showConfirmButton: false,
-        });
+          await axios.delete(
+            `http://localhost:5000/api/purchase-orders/${id}`
+          );
+
+          fetchOrders();
+
+          Swal.fire({
+            title: "Deleted!",
+            text: "Purchase Order deleted successfully.",
+            icon: "success",
+            timer: 1800,
+            showConfirmButton: false,
+          });
+
+        } catch (error) {
+
+          console.log(error);
+
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Unable to delete purchase order!",
+          });
+
+        }
+
       }
+
     });
+
   };
 
   return (
+
     <div className="purchase-table-card">
 
       <table className="purchase-table">
 
         <thead>
+
           <tr>
+
             <th>ID</th>
+
             <th>Product</th>
+
             <th>Supplier</th>
+
             <th>Warehouse</th>
+
             <th>Quantity</th>
+
             <th>Total</th>
+
             <th>Status</th>
+
             <th>Action</th>
+
           </tr>
+
         </thead>
 
         <tbody>
@@ -62,9 +97,14 @@ function PurchaseOrderTable({
           {orders.length === 0 ? (
 
             <tr>
-              <td colSpan="8" className="no-data">
+
+              <td
+                colSpan="8"
+                className="no-data"
+              >
                 No Purchase Orders Available
               </td>
+
             </tr>
 
           ) : (
@@ -86,6 +126,7 @@ function PurchaseOrderTable({
                 <td>{order.total}</td>
 
                 <td>
+
                   <span
                     className={`purchase-status ${order.status
                       .toLowerCase()
@@ -93,6 +134,7 @@ function PurchaseOrderTable({
                   >
                     {order.status}
                   </span>
+
                 </td>
 
                 <td className="action-buttons">
@@ -113,7 +155,9 @@ function PurchaseOrderTable({
 
                   <button
                     className="delete-btn"
-                    onClick={() => deleteOrder(order.id)}
+                    onClick={() =>
+                      deleteOrder(order.id)
+                    }
                   >
                     Delete
                   </button>
@@ -131,7 +175,9 @@ function PurchaseOrderTable({
       </table>
 
     </div>
+
   );
+
 }
 
 export default PurchaseOrderTable;

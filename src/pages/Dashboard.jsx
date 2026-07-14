@@ -1,5 +1,7 @@
-import Layout from "../components/layout/Layout";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
+import Layout from "../components/layout/Layout";
 import WelcomeBanner from "../components/dashboard/WelcomeBanner";
 import QuickActions from "../components/dashboard/QuickActions";
 import DashboardCards from "../components/dashboard/DashboardCards";
@@ -15,6 +17,43 @@ import ExportPDF from "../components/dashboard/ExportPDF";
 import "../styles/dashboard.css";
 
 function Dashboard() {
+
+  const [products, setProducts] = useState([]);
+  const [suppliers, setSuppliers] = useState([]);
+  const [warehouses, setWarehouses] = useState([]);
+  const [purchaseOrders, setPurchaseOrders] = useState([]);
+
+  useEffect(() => {
+    fetchDashboardData();
+  }, []);
+
+  const fetchDashboardData = async () => {
+
+    try {
+
+      const [
+        productsRes,
+        suppliersRes,
+        warehousesRes,
+        purchaseOrdersRes,
+      ] = await Promise.all([
+        axios.get("http://localhost:5000/api/products"),
+        axios.get("http://localhost:5000/api/suppliers"),
+        axios.get("http://localhost:5000/api/warehouses"),
+        axios.get("http://localhost:5000/api/purchase-orders"),
+      ]);
+
+      setProducts(productsRes.data);
+      setSuppliers(suppliersRes.data);
+      setWarehouses(warehousesRes.data);
+      setPurchaseOrders(purchaseOrdersRes.data);
+
+    } catch (error) {
+      console.log(error);
+    }
+
+  };
+
   return (
     <Layout>
 
@@ -34,25 +73,29 @@ function Dashboard() {
 
         <QuickActions />
 
-        <DashboardCards />
+        <DashboardCards
+          products={products}
+          suppliers={suppliers}
+          warehouses={warehouses}
+        />
 
         <div className="charts-grid">
-          <InventoryChart />
-          <StockChart />
+          <InventoryChart products={products} />
+          <StockChart products={products} />
         </div>
 
         <div className="bottom-grid">
-          <RecentOrders />
-          <LowStock />
+          <RecentOrders orders={purchaseOrders} />
+          <LowStock products={products} />
         </div>
 
         <div className="bottom-grid">
           <RecentActivity />
-          <TopProducts />
+          <TopProducts products={products} />
         </div>
 
         <div className="bottom-grid">
-          <InventoryHealth />
+          <InventoryHealth products={products} />
         </div>
 
       </div>

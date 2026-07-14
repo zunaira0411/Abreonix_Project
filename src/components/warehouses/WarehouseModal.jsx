@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
 import { toast } from "react-toastify";
 import "../../styles/warehouses.css";
 
 function WarehouseModal({
   isOpen,
   onClose,
-  warehouses,
-  setWarehouses,
+  fetchWarehouses,
   editingWarehouse,
 }) {
   const [formData, setFormData] = useState({
@@ -49,7 +49,7 @@ function WarehouseModal({
     });
   };
 
-  const saveWarehouse = (e) => {
+  const saveWarehouse = async (e) => {
     e.preventDefault();
 
     if (
@@ -62,56 +62,46 @@ function WarehouseModal({
       return;
     }
 
-    if (editingWarehouse) {
-      const updatedWarehouses = warehouses.map((warehouse) =>
-        warehouse.id === editingWarehouse.id
-          ? {
-              ...warehouse,
-              name: formData.name,
-              manager: formData.manager,
-              location: formData.location,
-              capacity: formData.capacity,
-              status: formData.status,
-              description: formData.description,
-            }
-          : warehouse
-      );
+    try {
+      if (editingWarehouse) {
+        await axios.put(
+          `http://localhost:5000/api/warehouses/${editingWarehouse.id}`,
+          {
+            ...formData,
+            capacity: Number(formData.capacity),
+          }
+        );
 
-      setWarehouses(updatedWarehouses);
+        toast.success("Warehouse Updated Successfully!");
+      } else {
+        await axios.post(
+          "http://localhost:5000/api/warehouses",
+          {
+            ...formData,
+            capacity: Number(formData.capacity),
+          }
+        );
 
-      toast.success("Warehouse Updated Successfully!");
-    } else {
-      const lastWarehouse = warehouses[warehouses.length - 1];
+        toast.success("Warehouse Added Successfully!");
+      }
 
-      const nextId = lastWarehouse
-        ? `WH-${Number(lastWarehouse.id.split("-")[1]) + 1}`
-        : "WH-1001";
+      fetchWarehouses();
 
-      const newWarehouse = {
-        id: nextId,
-        name: formData.name,
-        manager: formData.manager,
-        location: formData.location,
-        capacity: formData.capacity,
-        status: formData.status,
-        description: formData.description,
-      };
+      setFormData({
+        name: "",
+        manager: "",
+        location: "",
+        capacity: "",
+        status: "Active",
+        description: "",
+      });
 
-      setWarehouses([...warehouses, newWarehouse]);
+      onClose();
 
-      toast.success("Warehouse Added Successfully!");
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong!");
     }
-
-    setFormData({
-      name: "",
-      manager: "",
-      location: "",
-      capacity: "",
-      status: "Active",
-      description: "",
-    });
-
-    onClose();
   };  return (
     <div className="modal-overlay">
       <div className="warehouse-modal">

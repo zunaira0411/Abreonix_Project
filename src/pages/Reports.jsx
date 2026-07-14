@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import { saveAs } from "file-saver";
 
 import Layout from "../components/layout/Layout";
@@ -9,46 +10,70 @@ import ReportsTable from "../components/reports/ReportsTable";
 import ViewReportModal from "../components/reports/ViewReportModal";
 
 function Reports() {
+  const [reports, setReports] = useState([]);
+
   const [searchTerm, setSearchTerm] = useState("");
+
   const [viewReport, setViewReport] = useState(null);
 
-  const reportsData = [
-    {
-      id: "REP-1001",
-      name: "Monthly Inventory Report",
-      date: "10 Jul 2026",
-      generatedBy: "Admin",
-      status: "Completed",
-    },
-    {
-      id: "REP-1002",
-      name: "Supplier Performance",
-      date: "08 Jul 2026",
-      generatedBy: "Manager",
-      status: "Completed",
-    },
-    {
-      id: "REP-1003",
-      name: "Warehouse Stock Report",
-      date: "05 Jul 2026",
-      generatedBy: "Admin",
-      status: "Pending",
-    },
-    {
-      id: "REP-1004",
-      name: "Purchase Orders Report",
-      date: "01 Jul 2026",
-      generatedBy: "Manager",
-      status: "Completed",
-    },
-  ];
+  const [totalProducts, setTotalProducts] = useState(0);
 
-  const filteredReports = reportsData.filter(
+  const [totalSuppliers, setTotalSuppliers] = useState(0);
+
+  const [totalWarehouses, setTotalWarehouses] = useState(0);
+
+  const [totalInventory, setTotalInventory] = useState(0);
+
+  useEffect(() => {
+    fetchReports();
+    fetchCounts();
+  }, []);
+
+  const fetchReports = async () => {
+    try {
+      const res = await axios.get(
+        "http://localhost:5000/api/reports"
+      );
+
+      setReports(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchCounts = async () => {
+    try {
+      const [
+        products,
+        suppliers,
+        warehouses,
+        inventory,
+      ] = await Promise.all([
+        axios.get("http://localhost:5000/api/products"),
+        axios.get("http://localhost:5000/api/suppliers"),
+        axios.get("http://localhost:5000/api/warehouses"),
+        axios.get("http://localhost:5000/api/inventory"),
+      ]);
+
+      setTotalProducts(products.data.length);
+
+      setTotalSuppliers(suppliers.data.length);
+
+      setTotalWarehouses(warehouses.data.length);
+
+      setTotalInventory(inventory.data.length);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const filteredReports = reports.filter(
     (report) =>
       report.name
         .toLowerCase()
         .includes(searchTerm.toLowerCase()) ||
-      report.generatedBy
+
+      report.generated_by
         .toLowerCase()
         .includes(searchTerm.toLowerCase())
   );
@@ -64,10 +89,10 @@ function Reports() {
       ],
 
       ...filteredReports.map((report) => [
-        report.id,
+        report.report_id,
         report.name,
-        report.date,
-        report.generatedBy,
+        report.report_date,
+        report.generated_by,
         report.status,
       ]),
     ];
@@ -85,6 +110,7 @@ function Reports() {
 
   return (
     <Layout>
+
       <ReportsHeader
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
@@ -92,46 +118,35 @@ function Reports() {
       />
 
       <ReportsCards
-        totalProducts={
-          JSON.parse(localStorage.getItem("products"))?.length || 0
-        }
-        totalSuppliers={
-          JSON.parse(localStorage.getItem("suppliers"))?.length || 0
-        }
-        totalWarehouses={
-          JSON.parse(localStorage.getItem("warehouses"))?.length || 0
-        }
-        totalInventory={
-          JSON.parse(localStorage.getItem("inventory"))?.length || 0
-        }
+        totalProducts={totalProducts}
+        totalSuppliers={totalSuppliers}
+        totalWarehouses={totalWarehouses}
+        totalInventory={totalInventory}
       />
 
       <ReportsCharts
-        totalProducts={
-          JSON.parse(localStorage.getItem("products"))?.length || 0
-        }
-        totalSuppliers={
-          JSON.parse(localStorage.getItem("suppliers"))?.length || 0
-        }
-        totalWarehouses={
-          JSON.parse(localStorage.getItem("warehouses"))?.length || 0
-        }
-        totalInventory={
-          JSON.parse(localStorage.getItem("inventory"))?.length || 0
-        }
+        totalProducts={totalProducts}
+        totalSuppliers={totalSuppliers}
+        totalWarehouses={totalWarehouses}
+        totalInventory={totalInventory}
       />
 
       <ReportsTable
         reports={filteredReports}
-        onView={(report) => setViewReport(report)}
+        onView={(report) =>
+          setViewReport(report)
+        }
       />
 
       {viewReport && (
         <ViewReportModal
           report={viewReport}
-          onClose={() => setViewReport(null)}
+          onClose={() =>
+            setViewReport(null)
+          }
         />
       )}
+
     </Layout>
   );
 }

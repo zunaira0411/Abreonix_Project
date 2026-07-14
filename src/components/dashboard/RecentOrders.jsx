@@ -1,50 +1,37 @@
+import { useState, useEffect } from "react";
+import axios from "axios";
 import "../../styles/table.css";
 
-const orders = [
-  {
-    id: "PO1001",
-    supplier: "ABC Traders",
-    product: "Laptop",
-    quantity: 120,
-    status: "Delivered",
-    date: "09 Jul 2026",
-  },
-  {
-    id: "PO1002",
-    supplier: "Tech World",
-    product: "Mouse",
-    quantity: 250,
-    status: "Pending",
-    date: "08 Jul 2026",
-  },
-  {
-    id: "PO1003",
-    supplier: "Global Supply",
-    product: "Keyboard",
-    quantity: 180,
-    status: "Shipped",
-    date: "07 Jul 2026",
-  },
-  {
-    id: "PO1004",
-    supplier: "Smart Tech",
-    product: "Monitor",
-    quantity: 90,
-    status: "Delivered",
-    date: "06 Jul 2026",
-  },
-];
-
 function RecentOrders() {
+  const [orders, setOrders] = useState([]);
+
+  useEffect(() => {
+    fetchOrders();
+  }, []);
+
+  const fetchOrders = async () => {
+    try {
+      const res = await axios.get(
+        "http://localhost:5000/api/purchase-orders"
+      );
+
+      setOrders(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="table-card">
+
       <div className="table-header">
         <h2>Recent Purchase Orders</h2>
-        <button>View All</button>
       </div>
 
       <table>
+
         <thead>
+
           <tr>
             <th>Order ID</th>
             <th>Supplier</th>
@@ -53,29 +40,67 @@ function RecentOrders() {
             <th>Status</th>
             <th>Date</th>
           </tr>
+
         </thead>
 
         <tbody>
-          {orders.map((order) => (
-            <tr key={order.id}>
-              <td>{order.id}</td>
-              <td>{order.supplier}</td>
-              <td>{order.product}</td>
-              <td>{order.quantity}</td>
 
-              <td>
-                <span
-                  className={`status ${order.status.toLowerCase()}`}
-                >
-                  {order.status}
-                </span>
+          {orders.length === 0 ? (
+
+            <tr>
+              <td
+                colSpan="6"
+                style={{ textAlign: "center" }}
+              >
+                No Orders Found
               </td>
-
-              <td>{order.date}</td>
             </tr>
-          ))}
+
+          ) : (
+
+            orders.slice(0, 5).map((order) => (
+
+              <tr key={order.id}>
+
+                <td>
+                  {order.purchase_order_id ||
+                    order.id}
+                </td>
+
+                <td>{order.supplier}</td>
+
+                <td>{order.product}</td>
+
+                <td>{order.quantity}</td>
+
+                <td>
+
+                  <span
+                    className={`status ${order.status
+                      .toLowerCase()
+                      .replace(/\s/g, "-")}`}
+                  >
+                    {order.status}
+                  </span>
+
+                </td>
+
+                <td>
+                  {new Date(
+                    order.order_date
+                  ).toLocaleDateString()}
+                </td>
+
+              </tr>
+
+            ))
+
+          )}
+
         </tbody>
+
       </table>
+
     </div>
   );
 }

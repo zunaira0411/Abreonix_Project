@@ -1,3 +1,6 @@
+import { useState, useEffect } from "react";
+import axios from "axios";
+
 import {
   PieChart,
   Pie,
@@ -8,21 +11,51 @@ import {
 
 import "../../styles/charts.css";
 
-const data = [
-  { name: "Electronics", value: 45 },
-  { name: "Furniture", value: 20 },
-  { name: "Food", value: 18 },
-  { name: "Clothing", value: 17 },
-];
-
 const COLORS = [
   "#2563EB",
   "#10B981",
   "#F59E0B",
   "#EF4444",
+  "#8B5CF6",
+  "#EC4899",
 ];
 
 function StockChart() {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
+    try {
+      const res = await axios.get(
+        "http://localhost:5000/api/products"
+      );
+
+      const products = res.data;
+
+      const categoryMap = {};
+
+      products.forEach((item) => {
+        if (categoryMap[item.category]) {
+          categoryMap[item.category] += 1;
+        } else {
+          categoryMap[item.category] = 1;
+        }
+      });
+
+      const chartData = Object.keys(categoryMap).map((key) => ({
+        name: key,
+        value: categoryMap[key],
+      }));
+
+      setData(chartData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="chart-card">
 
@@ -32,6 +65,7 @@ function StockChart() {
       </div>
 
       <ResponsiveContainer width="100%" height={320}>
+
         <PieChart>
 
           <Pie
@@ -43,7 +77,7 @@ function StockChart() {
             {data.map((entry, index) => (
               <Cell
                 key={index}
-                fill={COLORS[index]}
+                fill={COLORS[index % COLORS.length]}
               />
             ))}
           </Pie>
@@ -51,6 +85,7 @@ function StockChart() {
           <Tooltip />
 
         </PieChart>
+
       </ResponsiveContainer>
 
     </div>

@@ -1,29 +1,32 @@
-import {
-  FaExclamationTriangle,
-} from "react-icons/fa";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { FaExclamationTriangle } from "react-icons/fa";
 
 import "../../styles/lowstock.css";
 
-const items = [
-  {
-    name: "Wireless Mouse",
-    stock: 5,
-  },
-  {
-    name: "Mechanical Keyboard",
-    stock: 3,
-  },
-  {
-    name: "HP Printer",
-    stock: 2,
-  },
-  {
-    name: "USB Cable",
-    stock: 7,
-  },
-];
-
 function LowStock() {
+  const [items, setItems] = useState([]);
+
+  useEffect(() => {
+    fetchLowStock();
+  }, []);
+
+  const fetchLowStock = async () => {
+    try {
+      const res = await axios.get(
+        "http://localhost:5000/api/products"
+      );
+
+      const lowStockProducts = res.data.filter(
+        (item) => Number(item.stock) < 10
+      );
+
+      setItems(lowStockProducts);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="low-stock-card">
 
@@ -31,27 +34,46 @@ function LowStock() {
         <h2>Low Stock Alerts</h2>
       </div>
 
-      {items.map((item, index) => (
+      {items.length === 0 ? (
 
-        <div className="stock-item" key={index}>
+        <p
+          style={{
+            textAlign: "center",
+            padding: "20px",
+            color: "#666",
+          }}
+        >
+          No Low Stock Products
+        </p>
 
-          <div className="stock-icon">
+      ) : (
 
-            <FaExclamationTriangle />
+        items.map((item) => (
+
+          <div
+            className="stock-item"
+            key={item.id}
+          >
+
+            <div className="stock-icon">
+              <FaExclamationTriangle />
+            </div>
+
+            <div>
+
+              <h4>{item.name}</h4>
+
+              <p>
+                Only {item.stock} items left
+              </p>
+
+            </div>
 
           </div>
 
-          <div>
+        ))
 
-            <h4>{item.name}</h4>
-
-            <p>Only {item.stock} items left</p>
-
-          </div>
-
-        </div>
-
-      ))}
+      )}
 
     </div>
   );

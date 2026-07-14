@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 import Layout from "../components/layout/Layout";
 import WarehouseHeader from "../components/warehouses/WarehouseHeader";
@@ -15,63 +17,29 @@ function Warehouses() {
 
   const [viewWarehouse, setViewWarehouse] = useState(null);
 
-  const defaultWarehouses = [
-    {
-      id: "WH-1001",
-      name: "Warehouse A",
-      manager: "Rahul Sharma",
-      location: "Delhi",
-      capacity: 5000,
-      status: "Active",
-      description: "Main warehouse for North India inventory.",
-    },
-    {
-      id: "WH-1002",
-      name: "Warehouse B",
-      manager: "Priya Singh",
-      location: "Mumbai",
-      capacity: 3000,
-      status: "Active",
-      description: "Handles West India product distribution.",
-    },
-    {
-      id: "WH-1003",
-      name: "Warehouse C",
-      manager: "Amit Verma",
-      location: "Bangalore",
-      capacity: 7000,
-      status: "Inactive",
-      description: "Currently under maintenance.",
-    },
-    {
-      id: "WH-1004",
-      name: "Warehouse D",
-      manager: "Neha Gupta",
-      location: "Hyderabad",
-      capacity: 4500,
-      status: "Active",
-      description: "Warehouse for South India operations.",
-    },
-  ];
+  const [warehouses, setWarehouses] = useState([]);
 
-  const [warehouses, setWarehouses] = useState(() => {
-    const savedWarehouses = localStorage.getItem("warehouses");
-    if (!savedWarehouses) {
-      return defaultWarehouses;
+  const [loading, setLoading] = useState(true);
+
+  const fetchWarehouses = async () => {
+    try {
+      const res = await axios.get(
+        "http://localhost:5000/api/warehouses"
+      );
+
+      setWarehouses(res.data);
+
+    } catch (error) {
+      console.log(error);
+      toast.error("Failed to load warehouses");
+    } finally {
+      setLoading(false);
     }
-    const parsedWarehouses = JSON.parse(savedWarehouses);
-
-    return parsedWarehouses.length > 0
-      ? parsedWarehouses
-      : defaultWarehouses;
-  });
+  };
 
   useEffect(() => {
-    localStorage.setItem(
-      "warehouses",
-      JSON.stringify(warehouses)
-    );
-  }, [warehouses]);
+    fetchWarehouses();
+  }, []);
 
   const filteredWarehouses = warehouses.filter(
     (warehouse) =>
@@ -84,7 +52,9 @@ function Warehouses() {
       warehouse.location
         .toLowerCase()
         .includes(searchTerm.toLowerCase())
-  );  return (
+  );
+
+  return (
     <Layout>
 
       <WarehouseHeader
@@ -97,8 +67,9 @@ function Warehouses() {
       />
 
       <WarehouseTable
+        loading={loading}
+        fetchWarehouses={fetchWarehouses}
         warehouses={filteredWarehouses}
-        allWarehouses={warehouses}
         setWarehouses={setWarehouses}
         onEdit={(warehouse) => {
           setEditingWarehouse(warehouse);
@@ -115,8 +86,7 @@ function Warehouses() {
           setEditingWarehouse(null);
           setIsModalOpen(false);
         }}
-        warehouses={warehouses}
-        setWarehouses={setWarehouses}
+        fetchWarehouses={fetchWarehouses}
         editingWarehouse={editingWarehouse}
       />
 

@@ -4,18 +4,32 @@ import {
   FaUserCircle,
   FaSearch,
 } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import "../../styles/navbar.css";
 
 function Navbar() {
+  const navigate = useNavigate();
+
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+
+    toast.success("Logged Out Successfully");
+
+    navigate("/login");
+  };
 
   return (
     <div className="navbar">
 
       <div className="search-box">
         <FaSearch />
+
         <input
           type="text"
           placeholder="Search..."
@@ -24,7 +38,7 @@ function Navbar() {
 
       <div className="navbar-right">
 
-        {/* Notification */}
+        {/* Notifications */}
 
         <div className="icon-wrapper">
 
@@ -81,15 +95,33 @@ function Navbar() {
 
             <div className="dropdown profile-dropdown">
 
-              <div className="dropdown-item">
+              <div
+                className="dropdown-item"
+                onClick={() => {
+                  navigate("/profile");
+                  setShowProfile(false);
+                }}
+                style={{ cursor: "pointer" }}
+              >
                 👤 My Profile
               </div>
 
-              <div className="dropdown-item">
-                ⚙ Settings
+              <div
+                className="dropdown-item"
+                onClick={() => {
+                  toast.info("Settings feature coming soon.");
+                  setShowProfile(false);
+                }}
+                style={{ cursor: "pointer" }}
+              >
+                ⚙️ Settings
               </div>
 
-              <div className="dropdown-item logout">
+              <div
+                className="dropdown-item logout"
+                onClick={handleLogout}
+                style={{ cursor: "pointer" }}
+              >
                 🚪 Logout
               </div>
 

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import axios from "axios";
 import { toast } from "react-toastify";
 
 import "../../styles/profile.css";
@@ -7,19 +8,30 @@ function ProfileCard() {
   const [editing, setEditing] = useState(false);
 
   const [user, setUser] = useState({
-    name: "Zunaira Fatima",
-    email: "zunaira@example.com",
-    phone: "+91 9876543210",
-    role: "Warehouse Manager",
-    address: "Prayagraj, Uttar Pradesh",
+    id: "",
+    full_name: "",
+    email: "",
+    phone: "",
+    role: "",
+    address: "",
   });
 
-  useEffect(() => {
-    const savedProfile = localStorage.getItem("profile");
+  // Load Profile from Backend
+  const fetchProfile = async () => {
+    try {
+      const res = await axios.get(
+        "http://localhost:5000/api/profile"
+      );
 
-    if (savedProfile) {
-      setUser(JSON.parse(savedProfile));
+      setUser(res.data);
+    } catch (error) {
+      console.log(error);
+      toast.error("Failed to load profile");
     }
+  };
+
+  useEffect(() => {
+    fetchProfile();
   }, []);
 
   const handleChange = (e) => {
@@ -29,12 +41,22 @@ function ProfileCard() {
     });
   };
 
-  const saveProfile = () => {
-    localStorage.setItem("profile", JSON.stringify(user));
+  const saveProfile = async () => {
+    try {
+      await axios.put(
+        `http://localhost:5000/api/profile/${user.id}`,
+        user
+      );
 
-    toast.success("Profile Updated Successfully");
+      toast.success("Profile Updated Successfully");
 
-    setEditing(false);
+      setEditing(false);
+
+      fetchProfile();
+    } catch (error) {
+      console.log(error);
+      toast.error("Failed to update profile");
+    }
   };
 
   return (
@@ -43,24 +65,27 @@ function ProfileCard() {
 
         <div className="profile-image">
           <div className="profile-placeholder">
-            ZF
+            {user.full_name
+              ? user.full_name
+                  .split(" ")
+                  .map((word) => word[0])
+                  .join("")
+              : "U"}
           </div>
         </div>
 
         <div className="profile-details">
-          <h2>{user.name}</h2>
+          <h2>{user.full_name}</h2>
           <h4>{user.role}</h4>
         </div>
 
-        <div className="profile-form">
-
-          <div>
+        <div className="profile-form">          <div>
             <label>Full Name</label>
 
             <input
               type="text"
-              name="name"
-              value={user.name}
+              name="full_name"
+              value={user.full_name}
               onChange={handleChange}
               disabled={!editing}
             />
@@ -118,19 +143,23 @@ function ProfileCard() {
         <div className="button-group">
 
           {!editing ? (
+
             <button
               className="edit-btn"
               onClick={() => setEditing(true)}
             >
               Edit Profile
             </button>
+
           ) : (
+
             <button
               className="save-btn"
               onClick={saveProfile}
             >
               Save Changes
             </button>
+
           )}
 
         </div>

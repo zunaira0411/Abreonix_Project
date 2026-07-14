@@ -1,72 +1,150 @@
+import { useState, useEffect } from "react";
+import axios from "axios";
+
 import {
   FaBoxOpen,
   FaTruck,
   FaWarehouse,
-  FaExclamationCircle,
 } from "react-icons/fa";
 
 import "../../styles/activity.css";
 
-const activities = [
-  {
-    id: 1,
-    icon: <FaBoxOpen />,
-    title: "New Product Added",
-    description: "Dell Inspiron Laptop",
-    time: "2 minutes ago",
-    color: "#10B981",
-  },
-  {
-    id: 2,
-    icon: <FaTruck />,
-    title: "Purchase Order Created",
-    description: "PO1024",
-    time: "15 minutes ago",
-    color: "#F59E0B",
-  },
-  {
-    id: 3,
-    icon: <FaWarehouse />,
-    title: "Warehouse Updated",
-    description: "Warehouse A",
-    time: "1 hour ago",
-    color: "#3B82F6",
-  },
-  {
-    id: 4,
-    icon: <FaExclamationCircle />,
-    title: "Low Stock Alert",
-    description: "Wireless Mouse",
-    time: "2 hours ago",
-    color: "#EF4444",
-  },
-];
-
 function RecentActivity() {
+  const [activities, setActivities] = useState([]);
+
+  useEffect(() => {
+    fetchActivities();
+  }, []);
+
+  const fetchActivities = async () => {
+    try {
+      const [products, orders, warehouses] =
+        await Promise.all([
+          axios.get("http://localhost:5000/api/products"),
+          axios.get("http://localhost:5000/api/purchase-orders"),
+          axios.get("http://localhost:5000/api/warehouses"),
+        ]);
+
+      const activityData = [];
+
+      products.data
+        .slice(-2)
+        .reverse()
+        .forEach((item) => {
+          activityData.push({
+            id: `P-${item.id}`,
+            icon: <FaBoxOpen />,
+            title: "New Product",
+            description: item.name,
+            time: new Date(
+              item.created_at
+            ).toLocaleString(),
+            color: "#10B981",
+          });
+        });
+
+      orders.data
+        .slice(-2)
+        .reverse()
+        .forEach((item) => {
+          activityData.push({
+            id: `O-${item.id}`,
+            icon: <FaTruck />,
+            title: "Purchase Order",
+            description: item.product,
+            time: new Date(
+              item.created_at || item.order_date
+            ).toLocaleString(),
+            color: "#F59E0B",
+          });
+        });
+
+      warehouses.data
+        .slice(-2)
+        .reverse()
+        .forEach((item) => {
+          activityData.push({
+            id: `W-${item.id}`,
+            icon: <FaWarehouse />,
+            title: "Warehouse",
+            description: item.name,
+            time: new Date(
+              item.created_at || Date.now()
+            ).toLocaleString(),
+            color: "#2563EB",
+          });
+        });
+
+      activityData.sort(
+        (a, b) =>
+          new Date(b.time) - new Date(a.time)
+      );
+
+      setActivities(activityData.slice(0, 6));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="activity-card">
+
       <div className="activity-header">
         <h2>Recent Activity</h2>
-        <p>Latest inventory updates</p>
+        <p>Latest System Updates</p>
       </div>
 
-      {activities.map((item) => (
-        <div className="activity-item" key={item.id}>
+      {activities.length === 0 ? (
+
+        <p
+          style={{
+            textAlign: "center",
+            padding: "20px",
+          }}
+        >
+          No Recent Activity
+        </p>
+
+      ) : (
+
+        activities.map((item) => (
+
           <div
-            className="activity-icon"
-            style={{ background: item.color }}
+            className="activity-item"
+            key={item.id}
           >
-            {item.icon}
+
+            <div
+              className="activity-icon"
+              style={{
+                background: item.color,
+              }}
+            >
+              {item.icon}
+            </div>
+
+            <div className="activity-info">
+
+              <h4>{item.title}</h4>
+
+              <p>{item.description}</p>
+
+            </div>
+
+            <span
+              style={{
+                fontSize: "12px",
+              }}
+            >
+              {item.time}
+            </span>
+
           </div>
 
-          <div className="activity-info">
-            <h4>{item.title}</h4>
-            <p>{item.description}</p>
-          </div>
+        ))
 
-          <span>{item.time}</span>
-        </div>
-      ))}
+      )}
+
     </div>
   );
 }

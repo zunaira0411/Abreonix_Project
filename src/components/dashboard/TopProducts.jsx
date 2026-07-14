@@ -1,58 +1,89 @@
+import { useState, useEffect } from "react";
+import axios from "axios";
 import { FaArrowTrendUp } from "react-icons/fa6";
+
 import "../../styles/topproducts.css";
 
-const products = [
-  {
-    id: 1,
-    name: "Dell Laptop",
-    sold: 145,
-    growth: "+18%",
-  },
-  {
-    id: 2,
-    name: "Wireless Mouse",
-    sold: 120,
-    growth: "+12%",
-  },
-  {
-    id: 3,
-    name: "HP Printer",
-    sold: 95,
-    growth: "+8%",
-  },
-  {
-    id: 4,
-    name: "Mechanical Keyboard",
-    sold: 82,
-    growth: "+5%",
-  },
-];
-
 function TopProducts() {
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    fetchTopProducts();
+  }, []);
+
+  const fetchTopProducts = async () => {
+    try {
+      const res = await axios.get(
+        "http://localhost:5000/api/products"
+      );
+
+      const sortedProducts = [...res.data]
+        .sort((a, b) => Number(b.stock) - Number(a.stock))
+        .slice(0, 5);
+
+      setProducts(sortedProducts);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="top-products-card">
+
       <div className="top-products-header">
-        <h2>Top Selling Products</h2>
-        <p>Best performers this month</p>
+        <h2>Top Products</h2>
+        <p>Highest Stock Products</p>
       </div>
 
-      {products.map((product) => (
-        <div className="top-product-item" key={product.id}>
-          <div className="product-rank">
-            #{product.id}
+      {products.length === 0 ? (
+
+        <p
+          style={{
+            textAlign: "center",
+            padding: "20px",
+            color: "#666",
+          }}
+        >
+          No Products Found
+        </p>
+
+      ) : (
+
+        products.map((product, index) => (
+
+          <div
+            className="top-product-item"
+            key={product.id}
+          >
+
+            <div className="product-rank">
+              #{index + 1}
+            </div>
+
+            <div className="product-details">
+
+              <h4>{product.name}</h4>
+
+              <span>
+                Stock : {product.stock}
+              </span>
+
+            </div>
+
+            <div className="growth">
+
+              <FaArrowTrendUp />
+
+              <span>{product.status}</span>
+
+            </div>
+
           </div>
 
-          <div className="product-details">
-            <h4>{product.name}</h4>
-            <span>{product.sold} Sold</span>
-          </div>
+        ))
 
-          <div className="growth">
-            <FaArrowTrendUp />
-            <span>{product.growth}</span>
-          </div>
-        </div>
-      ))}
+      )}
+
     </div>
   );
 }

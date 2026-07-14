@@ -1,3 +1,4 @@
+import ProductQR from "./ProductQR";
 import "../../styles/products.css";
 
 function ViewProductModal({ product, onClose }) {
@@ -20,27 +21,52 @@ function ViewProductModal({ product, onClose }) {
 
         <div className="view-product-content">
 
-          <p><strong>Product Name:</strong> {product.name}</p>
+          <p>
+            <strong>Product ID:</strong> {product.product_id}
+          </p>
 
-          <p><strong>Category:</strong> {product.category}</p>
+          <p>
+            <strong>Product Name:</strong> {product.name}
+          </p>
 
-          <p><strong>Supplier:</strong> {product.supplier}</p>
+          <p>
+            <strong>Category:</strong> {product.category}
+          </p>
 
-          <p><strong>Warehouse:</strong> {product.warehouse}</p>
+          <p>
+            <strong>Supplier:</strong> {product.supplier}
+          </p>
 
-          <p><strong>Price:</strong> {product.price}</p>
+          <p>
+            <strong>Warehouse:</strong> {product.warehouse}
+          </p>
 
-          <p><strong>Stock:</strong> {product.stock}</p>
+          <p>
+            <strong>Price:</strong> ₹{product.price}
+          </p>
 
-          <p><strong>Status:</strong> {product.status}</p>
+          <p>
+            <strong>Stock:</strong> {product.stock}
+          </p>
 
-          <p><strong>Barcode:</strong> {product.barcode || "N/A"}</p>
+          <p>
+            <strong>Status:</strong> {product.status}
+          </p>
 
-          <p><strong>Description:</strong></p>
+          <p>
+            <strong>Barcode:</strong> {product.barcode || "N/A"}
+          </p>
+
+          <p>
+            <strong>Description:</strong>
+          </p>
 
           <div className="product-description">
             {product.description || "No Description"}
           </div>
+
+          {/* QR Code Section */}
+          <ProductQR product={product} />
 
         </div>
 

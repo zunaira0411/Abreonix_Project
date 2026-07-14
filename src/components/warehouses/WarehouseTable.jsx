@@ -1,11 +1,11 @@
+import axios from "axios";
 import Swal from "sweetalert2";
 import { FaEye } from "react-icons/fa";
 import "../../styles/warehouses.css";
 
 function WarehouseTable({
   warehouses,
-  allWarehouses,
-  setWarehouses,
+  fetchWarehouses,
   onEdit,
   onView,
 }) {
@@ -32,30 +32,47 @@ function WarehouseTable({
 
       reverseButtons: true,
 
-    }).then((result) => {
+    }).then(async (result) => {
 
       if (result.isConfirmed) {
 
-        const updatedWarehouses =
-          allWarehouses.filter(
-            (warehouse) => warehouse.id !== id
+        try {
+
+          await axios.delete(
+            `http://localhost:5000/api/warehouses/${id}`
           );
 
-        setWarehouses(updatedWarehouses);
+          fetchWarehouses();
 
-        Swal.fire({
+          Swal.fire({
 
-          title: "Deleted!",
+            title: "Deleted!",
 
-          text: "Warehouse deleted successfully.",
+            text: "Warehouse deleted successfully.",
 
-          icon: "success",
+            icon: "success",
 
-          timer: 1800,
+            timer: 1800,
 
-          showConfirmButton: false,
+            showConfirmButton: false,
 
-        });
+          });
+
+        } catch (error) {
+
+          console.log(error);
+
+          Swal.fire({
+
+            icon: "error",
+
+            title: "Error",
+
+            text: "Failed to delete warehouse.",
+
+          });
+
+        }
 
       }
 
@@ -64,6 +81,7 @@ function WarehouseTable({
   };
 
   return (
+
     <div className="warehouses-table-card">
 
       <table className="warehouses-table">
@@ -71,13 +89,21 @@ function WarehouseTable({
         <thead>
 
           <tr>
+
             <th>ID</th>
+
             <th>Warehouse</th>
+
             <th>Manager</th>
+
             <th>Location</th>
+
             <th>Capacity</th>
+
             <th>Status</th>
+
             <th>Action</th>
+
           </tr>
 
         </thead>
@@ -89,7 +115,9 @@ function WarehouseTable({
             <tr>
 
               <td colSpan="7" className="no-data">
+
                 No Warehouses Available
+
               </td>
 
             </tr>
@@ -111,6 +139,7 @@ function WarehouseTable({
                 <td>{warehouse.capacity}</td>
 
                 <td>
+
                   <span
                     className={`warehouse-status ${warehouse.status
                       .toLowerCase()
@@ -118,6 +147,7 @@ function WarehouseTable({
                   >
                     {warehouse.status}
                   </span>
+
                 </td>
 
                 <td className="action-buttons">
@@ -158,7 +188,9 @@ function WarehouseTable({
       </table>
 
     </div>
+
   );
+
 }
 
 export default WarehouseTable;

@@ -1,14 +1,11 @@
 import { FaEye } from "react-icons/fa";
 import "../../styles/reports.css";
 
-function ReportsTable({ 
+function ReportsTable({
   reports,
   onView,
- }) {
-  
-
+}) {
   return (
-
     <div className="reports-table-card">
 
       <table className="reports-table">
@@ -26,11 +23,16 @@ function ReportsTable({
 
         </thead>
 
-        <tbody>          {reports.length === 0 ? (
+        <tbody>
+
+          {reports.length === 0 ? (
 
             <tr>
 
-              <td colSpan="6" className="no-data">
+              <td
+                colSpan="6"
+                className="no-data"
+              >
                 No Reports Available
               </td>
 
@@ -42,13 +44,19 @@ function ReportsTable({
 
               <tr key={report.id}>
 
-                <td>{report.id}</td>
+                <td>{report.report_id}</td>
 
                 <td>{report.name}</td>
 
-                <td>{report.date}</td>
+                <td>
+                  {new Date(
+                    report.report_date
+                  ).toLocaleDateString()}
+                </td>
 
-                <td>{report.generatedBy}</td>
+                <td>
+                  {report.generated_by}
+                </td>
 
                 <td>
 
@@ -64,10 +72,12 @@ function ReportsTable({
 
                 <td>
 
-                  <button 
+                  <button
                     className="view-btn"
-                    onClick={() => onView(report)}
-                    >
+                    onClick={() =>
+                      onView(report)
+                    }
+                  >
                     <FaEye />
                   </button>
 
@@ -84,7 +94,6 @@ function ReportsTable({
       </table>
 
     </div>
-
   );
 }
 

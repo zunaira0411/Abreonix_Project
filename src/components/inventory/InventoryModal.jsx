@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
 import { toast } from "react-toastify";
 import "../../styles/inventory.css";
 
 function InventoryModal({
   isOpen,
   onClose,
-  inventory,
-  setInventory,
+  fetchInventory,
   editingItem,
 }) {
   const [formData, setFormData] = useState({
@@ -43,7 +43,7 @@ function InventoryModal({
     });
   };
 
-  const saveInventory = (e) => {
+  const saveInventory = async (e) => {
     e.preventDefault();
 
     if (
@@ -55,70 +55,63 @@ function InventoryModal({
       return;
     }
 
-    let status = "In Stock";
+    const status =
+      Number(formData.stock) === 0
+        ? "Out of Stock"
+        : Number(formData.stock) < 10
+        ? "Low Stock"
+        : "In Stock";
 
-    if (Number(formData.stock) === 0) {
-      status = "Out of Stock";
-    } else if (Number(formData.stock) < 10) {
-      status = "Low Stock";
-    }    if (editingItem) {
+    try {
+      if (editingItem) {
+        await axios.put(
+          `http://localhost:5000/api/inventory/${editingItem.id}`,
+          {
+            ...formData,
+            stock: Number(formData.stock),
+            status,
+          }
+        );
 
-      const updatedInventory = inventory.map((item) =>
-        item.id === editingItem.id
-          ? {
-              ...item,
-              product: formData.product,
-              warehouse: formData.warehouse,
-              stock: Number(formData.stock),
-              status,
-              description: formData.description,
-            }
-          : item
-      );
+        toast.success("Inventory Updated Successfully!");
+      } else {
+        const inventoryId = `INV-${Date.now()}`;
 
-      setInventory(updatedInventory);
+        await axios.post(
+          "http://localhost:5000/api/inventory",
+          {
+            inventory_id: inventoryId,
+            ...formData,
+            stock: Number(formData.stock),
+            status,
+          }
+        );
 
-      toast.success("Inventory Updated Successfully!");
+        toast.success("Inventory Added Successfully!");
+      }
 
-    } else {
+      await fetchInventory();
 
-      const lastItem = inventory[inventory.length - 1];
+      setFormData({
+        product: "",
+        warehouse: "",
+        stock: "",
+        description: "",
+      });
 
-      const nextId = lastItem
-        ? `INV-${Number(lastItem.id.split("-")[1]) + 1}`
-        : "INV-1001";
+      onClose();
 
-      const newItem = {
-        id: nextId,
-        product: formData.product,
-        warehouse: formData.warehouse,
-        stock: Number(formData.stock),
-        status,
-        description: formData.description,
-      };
-
-      setInventory([...inventory, newItem]);
-
-      toast.success("Inventory Added Successfully!");
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong!");
     }
-
-    setFormData({
-      product: "",
-      warehouse: "",
-      stock: "",
-      description: "",
-    });
-
-    onClose();
   };
 
   return (
     <div className="modal-overlay">
-
       <div className="inventory-modal">
 
         <div className="modal-header">
-
           <h2>
             {editingItem
               ? "Edit Inventory"
@@ -131,7 +124,6 @@ function InventoryModal({
           >
             ✖
           </button>
-
         </div>
 
         <form
@@ -140,7 +132,6 @@ function InventoryModal({
         >
 
           <div className="form-group">
-
             <label>Product</label>
 
             <input
@@ -150,11 +141,9 @@ function InventoryModal({
               onChange={handleChange}
               placeholder="Enter Product Name"
             />
-
           </div>
 
           <div className="form-group">
-
             <label>Warehouse</label>
 
             <input
@@ -164,11 +153,9 @@ function InventoryModal({
               onChange={handleChange}
               placeholder="Enter Warehouse"
             />
-
           </div>
 
           <div className="form-group">
-
             <label>Stock</label>
 
             <input
@@ -178,11 +165,9 @@ function InventoryModal({
               onChange={handleChange}
               placeholder="Enter Stock Quantity"
             />
-
           </div>
 
           <div className="form-group full-width">
-
             <label>Description</label>
 
             <textarea
@@ -192,7 +177,6 @@ function InventoryModal({
               onChange={handleChange}
               placeholder="Inventory Description"
             ></textarea>
-
           </div>
 
           <div className="form-buttons">
@@ -219,7 +203,6 @@ function InventoryModal({
         </form>
 
       </div>
-
     </div>
   );
 }

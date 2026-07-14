@@ -78,17 +78,36 @@ function ProductModal({
             ...formData,
             stock: Number(formData.stock),
             price: Number(formData.price),
+
+            
+            status:
+              Number(formData.stock) === 0
+                ? "Out of Stock"
+                : Number(formData.stock) < 10
+                ? "Low Stock"
+                : "In Stock",
           }
         );
 
         toast.success("Product Updated Successfully!");
       } else {
+        const productId = `PROD-${Date.now()}`;
+
         await axios.post(
           "http://localhost:5000/api/products",
           {
+            product_id: productId,
             ...formData,
             stock: Number(formData.stock),
             price: Number(formData.price),
+
+            status:
+              Number(formData.stock) === 0
+                ? "Out of Stock"
+                : Number(formData.stock) < 10
+                ? "Low Stock"
+                : "In Stock",
+
           }
         );
 

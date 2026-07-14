@@ -7,6 +7,11 @@ require("./config/db");
 
 const authRoutes = require("./routes/authRoutes");
 const productRoutes = require("./routes/productRoutes");
+const warehouseRoutes = require("./routes/warehouseRoutes");
+const purchaseOrderRoutes = require("./routes/purchaseOrderRoutes");
+const inventoryRoutes = require("./routes/inventoryRoutes");
+const reportRoutes = require("./routes/reportRoutes");
+const profileRoutes = require("./routes/profileRoutes");
 
 const app = express();
 
@@ -20,6 +25,11 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/suppliers", supplierRoutes);
+app.use("/api/warehouses", warehouseRoutes);
+app.use("/api/purchase-orders", purchaseOrderRoutes);
+app.use("/api/inventory", inventoryRoutes);
+app.use("/api/reports", reportRoutes);
+app.use("/api/profile", profileRoutes);
 
 // Authentication Routes
 app.use("/api/auth", authRoutes);

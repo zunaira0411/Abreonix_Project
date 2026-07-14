@@ -6,23 +6,33 @@ import {
   FaClipboardList,
   FaChartBar,
   FaUserCircle,
-  FaSignOutAlt
+  FaSignOutAlt,
 } from "react-icons/fa";
 
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import "../../styles/sidebar.css";
 
 function Sidebar() {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+
+    toast.success("Logged Out Successfully");
+
+    setTimeout(() => {
+      navigate("/");
+    }, 800);
+  };
+
   return (
     <aside className="sidebar">
-
-      <div className="logo">
-        📦 Smart Inventory
-      </div>
+      <div className="logo">📦 Smart Inventory</div>
 
       <nav>
-
         <NavLink to="/dashboard" className="nav-item">
           <FaHome />
           <span>Dashboard</span>
@@ -62,14 +72,12 @@ function Sidebar() {
           <FaUserCircle />
           <span>Profile</span>
         </NavLink>
-
       </nav>
 
-      <button className="logout-btn">
+      <button className="logout-btn" onClick={handleLogout}>
         <FaSignOutAlt />
         Logout
       </button>
-
     </aside>
   );
 }

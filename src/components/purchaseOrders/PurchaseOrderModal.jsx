@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
 import { toast } from "react-toastify";
 import "../../styles/purchaseOrders.css";
 
@@ -8,6 +9,7 @@ function PurchaseOrderModal({
   orders,
   setOrders,
   editingOrder,
+  fetchOrders,
 }) {
   const [formData, setFormData] = useState({
     product: "",
@@ -55,7 +57,7 @@ function PurchaseOrderModal({
     });
   };
 
-  const saveOrder = (e) => {
+  const saveOrder = async (e) => {
     e.preventDefault();
 
     if (
@@ -70,78 +72,66 @@ function PurchaseOrderModal({
       return;
     }
 
-    const total =
-      Number(formData.quantity) *
-      Number(formData.unitPrice);    if (editingOrder) {
+    const orderData = {
+      product: formData.product,
+      supplier: formData.supplier,
+      warehouse: formData.warehouse,
+      quantity: Number(formData.quantity),
+      unit_price: Number(formData.unitPrice),
+      total:
+        Number(formData.quantity) *
+        Number(formData.unitPrice),
+      order_date: formData.orderDate,
+      status: formData.status,
+      description: formData.description,
+    };
 
-      const updatedOrders = orders.map((order) =>
-        order.id === editingOrder.id
-          ? {
-              ...order,
-              product: formData.product,
-              supplier: formData.supplier,
-              warehouse: formData.warehouse,
-              quantity: Number(formData.quantity),
-              unitPrice: Number(formData.unitPrice),
-              total: `₹${total}`,
-              orderDate: formData.orderDate,
-              status: formData.status,
-              description: formData.description,
-            }
-          : order
-      );
+    try {
+      if (editingOrder) {
+        await axios.put(
+          `http://localhost:5000/api/purchase-orders/${editingOrder.id}`,
+          orderData
+        );
 
-      setOrders(updatedOrders);
+        toast.success(
+          "Purchase Order Updated Successfully!"
+        );
+      } else {
+        await axios.post(
+          "http://localhost:5000/api/purchase-orders",
+          orderData
+        );
 
-      toast.success("Purchase Order Updated Successfully!");
+        toast.success(
+          "Purchase Order Added Successfully!"
+        );
+      }
 
-    } else {
+      fetchOrders();
 
-      const lastOrder = orders[orders.length - 1];
+      setFormData({
+        product: "",
+        supplier: "",
+        warehouse: "",
+        quantity: "",
+        unitPrice: "",
+        orderDate: "",
+        status: "Pending",
+        description: "",
+      });
 
-      const nextId = lastOrder
-        ? `PO-${Number(lastOrder.id.split("-")[1]) + 1}`
-        : "PO-1001";
+      onClose();
 
-      const newOrder = {
-        id: nextId,
-        product: formData.product,
-        supplier: formData.supplier,
-        warehouse: formData.warehouse,
-        quantity: Number(formData.quantity),
-        unitPrice: Number(formData.unitPrice),
-        total: `₹${total}`,
-        orderDate: formData.orderDate,
-        status: formData.status,
-        description: formData.description,
-      };
+    } catch (error) {
+      console.log(error);
 
-      setOrders([...orders, newOrder]);
-
-      toast.success("Purchase Order Added Successfully!");
+      toast.error("Something went wrong!");
     }
-
-    setFormData({
-      product: "",
-      supplier: "",
-      warehouse: "",
-      quantity: "",
-      unitPrice: "",
-      orderDate: "",
-      status: "Pending",
-      description: "",
-    });
-
-    onClose();
-  };
-
-  return (
+  };  return (
     <div className="modal-overlay">
-
       <div className="purchase-modal">
 
         <div className="modal-header">
-
           <h2>
             {editingOrder
               ? "Edit Purchase Order"
@@ -154,7 +144,6 @@ function PurchaseOrderModal({
           >
             ✖
           </button>
-
         </div>
 
         <form
@@ -248,7 +237,6 @@ function PurchaseOrderModal({
           </div>
 
           <div className="form-group full-width">
-
             <label>Description</label>
 
             <textarea
@@ -258,7 +246,6 @@ function PurchaseOrderModal({
               onChange={handleChange}
               placeholder="Order Description"
             ></textarea>
-
           </div>
 
           <div className="form-buttons">
@@ -285,7 +272,6 @@ function PurchaseOrderModal({
         </form>
 
       </div>
-
     </div>
   );
 }

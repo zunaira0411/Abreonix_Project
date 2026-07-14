@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 import Layout from "../components/layout/Layout";
 import PurchaseOrderHeader from "../components/purchaseOrders/PurchaseOrderHeader";
@@ -7,7 +9,6 @@ import PurchaseOrderModal from "../components/purchaseOrders/PurchaseOrderModal"
 import ViewPurchaseOrderModal from "../components/purchaseOrders/ViewPurchaseOrderModal";
 
 function PurchaseOrders() {
-
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -16,85 +17,53 @@ function PurchaseOrders() {
 
   const [viewOrder, setViewOrder] = useState(null);
 
-  const defaultOrders = [
-    {
-      id: "PO-1001",
-      product: "Laptop",
-      supplier: "Tech Suppliers Ltd",
-      warehouse: "Warehouse A",
-      quantity: 10,
-      unitPrice: 50000,
-      total: "₹500000",
-      orderDate: "2026-07-08",
-      status: "Delivered",
-      description: "Office laptops purchase",
-    },
-    {
-      id: "PO-1002",
-      product: "Wireless Mouse",
-      supplier: "ABC Electronics",
-      warehouse: "Warehouse B",
-      quantity: 50,
-      unitPrice: 700,
-      total: "₹35000",
-      orderDate: "2026-07-09",
-      status: "Pending",
-      description: "Accessories stock",
-    },
-    {
-      id: "PO-1003",
-      product: "Office Chair",
-      supplier: "Furniture Hub",
-      warehouse: "Warehouse C",
-      quantity: 20,
-      unitPrice: 4500,
-      total: "₹90000",
-      orderDate: "2026-07-10",
-      status: "Shipped",
-      description: "Office furniture",
-    },
-  ];
+  const [orders, setOrders] = useState([]);
 
-  const [orders, setOrders] = useState(() => {
+  const [loading, setLoading] = useState(true);
 
-    const savedOrders =
-      localStorage.getItem("purchaseOrders");
+  const fetchOrders = async () => {
+    try {
+      const res = await axios.get(
+        "http://localhost:5000/api/purchase-orders"
+      );
 
-    if (!savedOrders) {
-      return defaultOrders;
+      const formattedOrders = res.data.map((order) => ({
+        ...order,
+        unitPrice: Number(order.unit_price),
+        total: `₹${order.total}`,
+        orderDate: order.order_date
+          ? order.order_date.split("T")[0]
+          : "",
+      }));
+
+      setOrders(formattedOrders);
+
+    } catch (error) {
+      console.log(error);
+      toast.error("Failed to load Purchase Orders");
+    } finally {
+      setLoading(false);
     }
-
-    const parsedOrders = JSON.parse(savedOrders);
-
-    return parsedOrders.length > 0
-      ? parsedOrders
-      : defaultOrders;
-
-  });
+  };
 
   useEffect(() => {
-
-    localStorage.setItem(
-      "purchaseOrders",
-      JSON.stringify(orders)
-    );
-
-  }, [orders]);
+    fetchOrders();
+  }, []);
 
   const filteredOrders = orders.filter(
     (order) =>
       order.product
         .toLowerCase()
         .includes(searchTerm.toLowerCase()) ||
-
       order.supplier
         .toLowerCase()
         .includes(searchTerm.toLowerCase()) ||
-
       order.warehouse
         .toLowerCase()
         .includes(searchTerm.toLowerCase())
-  );  return (
+  );
+
+  return (
     <Layout>
 
       <PurchaseOrderHeader
@@ -107,6 +76,8 @@ function PurchaseOrders() {
       />
 
       <PurchaseOrderTable
+        loading={loading}
+        fetchOrders={fetchOrders}
         orders={filteredOrders}
         allOrders={orders}
         setOrders={setOrders}
@@ -114,12 +85,11 @@ function PurchaseOrders() {
           setEditingOrder(order);
           setIsModalOpen(true);
         }}
-        onView={(order) =>
-          setViewOrder(order)
-        }
+        onView={(order) => setViewOrder(order)}
       />
 
       <PurchaseOrderModal
+        fetchOrders={fetchOrders}
         isOpen={isModalOpen}
         onClose={() => {
           setEditingOrder(null);
@@ -133,9 +103,7 @@ function PurchaseOrders() {
       {viewOrder && (
         <ViewPurchaseOrderModal
           order={viewOrder}
-          onClose={() =>
-            setViewOrder(null)
-          }
+          onClose={() => setViewOrder(null)}
         />
       )}
 

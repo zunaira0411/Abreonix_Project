@@ -12,37 +12,103 @@ import PurchaseOrders from "./pages/PurchaseOrders";
 import Reports from "./pages/Reports";
 import Profile from "./pages/Profile";
 
+import ProtectedRoute from "./components/ProtectedRoute";
+
 function App() {
   return (
     <BrowserRouter>
+
       <Routes>
 
-        {/* Default Route */}
         <Route path="/" element={<Navigate to="/home" />} />
 
-        {/* Home */}
         <Route path="/home" element={<Home />} />
 
-        {/* Authentication */}
         <Route path="/login" element={<Login />} />
+
         <Route path="/register" element={<Register />} />
 
-        {/* Dashboard */}
-        <Route path="/dashboard" element={<Dashboard />} />
+        {/* Protected Routes */}
 
-        {/* Modules */}
-        <Route path="/products" element={<Products />} />
-        <Route path="/suppliers" element={<Suppliers />} />
-        <Route path="/warehouses" element={<Warehouses />} />
-        <Route path="/inventory" element={<Inventory />} />
-        <Route path="/purchase-orders" element={<PurchaseOrders />} />
-        <Route path="/reports" element={<Reports />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
 
-        {/* Invalid Route */}
-        <Route path="*" element={<Navigate to="/home" />} />
+        <Route
+          path="/products"
+          element={
+            <ProtectedRoute>
+              <Products />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/suppliers"
+          element={
+            <ProtectedRoute>
+              <Suppliers />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/warehouses"
+          element={
+            <ProtectedRoute>
+              <Warehouses />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/inventory"
+          element={
+            <ProtectedRoute>
+              <Inventory />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/purchase-orders"
+          element={
+            <ProtectedRoute>
+              <PurchaseOrders />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/reports"
+          element={
+            <ProtectedRoute>
+              <Reports />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="*"
+          element={<Navigate to="/home" />}
+        />
 
       </Routes>
+
     </BrowserRouter>
   );
 }
