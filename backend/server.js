@@ -1,3 +1,4 @@
+const supplierRoutes = require("./routes/supplierRoutes");
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
@@ -18,6 +19,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
+app.use("/api/suppliers", supplierRoutes);
 
 // Authentication Routes
 app.use("/api/auth", authRoutes);

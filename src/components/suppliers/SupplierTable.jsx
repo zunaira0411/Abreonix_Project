@@ -1,10 +1,12 @@
 import Swal from "sweetalert2";
+import axios from "axios";
 import { FaEye } from "react-icons/fa";
 import "../../styles/suppliers.css";
 
 function SupplierTable({
   suppliers,
-  setSuppliers,
+  loading,
+  fetchSuppliers,
   onEdit,
   onView,
 }) {
@@ -31,29 +33,47 @@ function SupplierTable({
 
       reverseButtons: true,
 
-    }).then((result) => {
+    }).then(async (result) => {
 
       if (result.isConfirmed) {
 
-        const updatedSuppliers = suppliers.filter(
-          (supplier) => supplier.id !== id
-        );
+        try {
 
-        setSuppliers(updatedSuppliers);
+          await axios.delete(
+            `http://localhost:5000/api/suppliers/${id}`
+          );
 
-        Swal.fire({
+          fetchSuppliers();
 
-          title: "Deleted!",
+          Swal.fire({
 
-          text: "Supplier deleted successfully.",
+            title: "Deleted!",
 
-          icon: "success",
+            text: "Supplier deleted successfully.",
 
-          timer: 1800,
+            icon: "success",
 
-          showConfirmButton: false,
+            timer: 1800,
 
-        });
+            showConfirmButton: false,
+
+          });
+
+        } catch (error) {
+
+          console.log(error);
+
+          Swal.fire({
+
+            title: "Error!",
+
+            text: "Failed to delete supplier.",
+
+            icon: "error",
+
+          });
+
+        }
 
       }
 
@@ -91,7 +111,19 @@ function SupplierTable({
 
         <tbody>
 
-          {suppliers.length === 0 ? (
+          {loading ? (
+
+            <tr>
+
+              <td colSpan="7" className="no-data">
+
+                Loading...
+
+              </td>
+
+            </tr>
+
+          ) : suppliers.length === 0 ? (
 
             <tr>
 

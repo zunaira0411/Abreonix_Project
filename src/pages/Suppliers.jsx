@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 import Layout from "../components/layout/Layout";
 import SupplierHeader from "../components/suppliers/SupplierHeader";
@@ -15,47 +17,34 @@ function Suppliers() {
 
   const [viewSupplier, setViewSupplier] = useState(null);
 
-  const defaultSuppliers = [
-    {
-      id: "SUP-1001",
-      name: "Dell India",
-      contact: "9876543210",
-      email: "sales@dell.com",
-      location: "Delhi",
-      status: "Active",
-    },
-    {
-      id: "SUP-1002",
-      name: "HP Pvt Ltd",
-      contact: "9876501234",
-      email: "support@hp.com",
-      location: "Mumbai",
-      status: "Active",
-    },
-    {
-      id: "SUP-1003",
-      name: "Logitech",
-      contact: "9876511111",
-      email: "contact@logitech.com",
-      location: "Bangalore",
-      status: "Inactive",
-    },
-  ];
+  const [suppliers, setSuppliers] = useState([]);
 
-  const [suppliers, setSuppliers] = useState(() => {
-    const savedSuppliers = localStorage.getItem("suppliers");
+  const [loading, setLoading] = useState(true);
 
-    return savedSuppliers
-      ? JSON.parse(savedSuppliers)
-      : defaultSuppliers;
-  });
+  const fetchSuppliers = async () => {
+    try {
+      const res = await axios.get(
+        "http://localhost:5000/api/suppliers"
+      );
+
+      const formattedSuppliers = res.data.map((supplier) => ({
+        ...supplier,
+      }));
+
+      setSuppliers(formattedSuppliers);
+
+    } catch (error) {
+      toast.error("Failed to load suppliers");
+      console.log(error);
+
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    localStorage.setItem(
-      "suppliers",
-      JSON.stringify(suppliers)
-    );
-  }, [suppliers]);
+    fetchSuppliers();
+  }, []);
 
   const filteredSuppliers = suppliers.filter(
     (supplier) =>
@@ -69,7 +58,6 @@ function Suppliers() {
         .toLowerCase()
         .includes(searchTerm.toLowerCase())
   );
-
   return (
     <Layout>
 
@@ -83,6 +71,8 @@ function Suppliers() {
       />
 
       <SupplierTable
+        loading={loading}
+        fetchSuppliers={fetchSuppliers}
         suppliers={filteredSuppliers}
         allSuppliers={suppliers}
         setSuppliers={setSuppliers}
@@ -96,13 +86,12 @@ function Suppliers() {
       />
 
       <SupplierModal
+        fetchSuppliers={fetchSuppliers}
         isOpen={isModalOpen}
         onClose={() => {
           setEditingSupplier(null);
           setIsModalOpen(false);
         }}
-        suppliers={suppliers}
-        setSuppliers={setSuppliers}
         editingSupplier={editingSupplier}
       />
 

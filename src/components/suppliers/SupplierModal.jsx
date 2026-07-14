@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
 import { toast } from "react-toastify";
 import "../../styles/suppliers.css";
 
 function SupplierModal({
   isOpen,
   onClose,
-  suppliers,
-  setSuppliers,
+  fetchSuppliers,
   editingSupplier,
 }) {
   const [formData, setFormData] = useState({
@@ -52,7 +52,7 @@ function SupplierModal({
     });
   };
 
-  const saveSupplier = (e) => {
+  const saveSupplier = async (e) => {
     e.preventDefault();
 
     if (
@@ -65,60 +65,44 @@ function SupplierModal({
       return;
     }
 
-    if (editingSupplier) {
-      const updatedSuppliers = suppliers.map((supplier) =>
-        supplier.id === editingSupplier.id
-          ? {
-              ...supplier,
-              name: formData.name,
-              contact: formData.contact,
-              email: formData.email,
-              location: formData.location,
-              status: formData.status,
-              address: formData.address,
-              description: formData.description,
-            }
-          : supplier
-      );
+    try {
+      if (editingSupplier) {
+        await axios.put(
+          `http://localhost:5000/api/suppliers/${editingSupplier.id}`,
+          formData
+        );
 
-      setSuppliers(updatedSuppliers);
+        toast.success("Supplier Updated Successfully!");
+      } else {
+        await axios.post(
+          "http://localhost:5000/api/suppliers",
+          formData
+        );
 
-      toast.success("Supplier Updated Successfully!");
-    } else {
-      const lastSupplier = suppliers[suppliers.length - 1];
+        toast.success("Supplier Added Successfully!");
+      }
 
-      const nextId = lastSupplier
-        ? `SUP-${Number(lastSupplier.id.split("-")[1]) + 1}`
-        : "SUP-1001";
+      fetchSuppliers();
 
-      const newSupplier = {
-        id: nextId,
-        name: formData.name,
-        contact: formData.contact,
-        email: formData.email,
-        location: formData.location,
-        status: formData.status,
-        address: formData.address,
-        description: formData.description,
-      };
+      setFormData({
+        name: "",
+        contact: "",
+        email: "",
+        location: "",
+        status: "Active",
+        address: "",
+        description: "",
+      });
 
-      setSuppliers([...suppliers, newSupplier]);
+      onClose();
 
-      toast.success("Supplier Added Successfully!");
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong!");
     }
+  };
 
-    setFormData({
-      name: "",
-      contact: "",
-      email: "",
-      location: "",
-      status: "Active",
-      address: "",
-      description: "",
-    });
-
-    onClose();
-  };  return (
+  return (
     <div className="modal-overlay">
       <div className="supplier-modal">
 
@@ -199,9 +183,7 @@ function SupplierModal({
               <option value="Active">Active</option>
               <option value="Inactive">Inactive</option>
             </select>
-          </div>
-
-          <div className="form-group full-width">
+          </div>          <div className="form-group full-width">
             <label>Address</label>
 
             <textarea
